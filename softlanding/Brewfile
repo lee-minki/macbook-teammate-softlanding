@@ -1,0 +1,65 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  MacBook Soft-Landing Brewfile (v1.3.0)                         ║
+# ║  대상: Windows에서 넘어온 사용자가 "민기 표준" 베이스라인 1회 설치     ║
+# ║  사용: brew bundle --file=Brewfile  (bootstrap.sh 가 자동 호출)       ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+# === ① Mac App Store CLI (Amphetamine, Hidden Bar 등 App Store 앱 자동화용) ===
+brew "mas"
+
+# === ② 개발 CLI — Python/Node/Git 베이스라인 ===
+brew "git"               # 최신 git
+brew "gh"                # GitHub CLI (Repo clone, PR, gist)
+brew "tailscale"         # 사내망 VPN
+brew "node"              # JS 런타임 + npm
+brew "python@3.11"       # 팀 표준 Python (Alarm-Checker_Server 결정. 2026-05-12)
+brew "uv"                # 빠른 pip/venv 매니저
+brew "pipx"              # 글로벌 CLI Python 도구
+brew "jq"                # JSON CLI
+brew "ripgrep"           # rg — 빠른 grep
+brew "fd"                # fd — 빠른 find
+brew "tree"              # 폴더 시각화
+brew "wget"              # 다운로드
+
+# === ③ 윈도우→맥 갭 메우기 (이것만큼은 반드시) ===
+cask "alt-tab"           # ⌘+Tab 을 윈도우식 "창 단위" 로 (윈도우 Alt+Tab 그대로)
+cask "maccy"             # 클립보드 매니저 — 윈도우의 Win+V 대체
+cask "the-unarchiver"    # rar/7z/zip 등 모든 압축 해제
+cask "mos"               # 외부 마우스(특히 로지텍) 부드러운 스크롤 + 방향 반전 토글
+cask "logi-options-plus" # 로지텍 마우스/키보드 공식 — 버튼 매핑/제스처
+cask "rectangle"         # 창 분할 (윈도우 Win+화살표 대체)
+
+# === ④ 키보드 편의 (윈도우식 키감 + Hyperkey/리더키) ===
+# WinMacKey 는 brew cask 없음 → bootstrap.sh 에서 GitHub Release DMG 직접 fetch
+cask "karabiner-elements"  # Hyper Key / Leader Key 리매핑 (CapsLock → ⌘⌥⌃⇧)
+
+# === ⑤ 메뉴바 & 시스템 모니터 ===
+cask "stats"             # 메뉴바 CPU/RAM/GPU/배터리/네트워크 (RunCat 상위 호환)
+# Hidden Bar 는 App Store 전용 → bootstrap.sh 에서 mas 로 설치 (id 1452453066)
+
+# === ⑥ 생산성 ===
+cask "raycast"           # Spotlight 대체 + Window Mgmt + Snippets + Calc + AI
+cask "google-chrome"     # 표준 브라우저
+cask "telegram-desktop"  # 팀 정책상
+
+# === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
+cask "iterm2"            # macOS 기본 Terminal 보다 훨씬 편함 (분할, 검색, 프로파일)
+cask "visual-studio-code"  # 표준 에디터
+cask "cursor"            # AI-native 에디터 (Claude/GPT 통합)
+
+# === ⑧ AI 데스크톱 (클라우드) ===
+cask "claude"            # Claude Desktop (MCP, 로컬 파일 접근)
+# Claude Code / Codex / Gemini CLI 는 npm -g 로 bootstrap.sh 가 처리
+
+# === ⑨ 로컬 LLM (MLX / Apple Silicon) ===
+brew "ollama"            # 로컬 LLM 런타임 (CLI). `ollama run llama3.2` 등
+cask "lm-studio"         # GUI 로컬 LLM — 모델 탐색/다운로드/채팅, OpenAI 호환 서버
+# MLX (mlx, mlx-lm) 는 Python 패키지 → bootstrap.sh 가 ~/worksapces/mlx-lab venv 에 설치
+#   Apple Silicon 전용. Intel Mac 에서는 자동 skip.
+
+# 참고:
+# - winmackey:   WINMACKEY_REPO 환경변수가 가리키는 GitHub Release DMG 직접 다운로드 (미지정 시 skip)
+# - runcat:      mas 1429033973 (선택, Stats 가 상위 호환이라 기본 OFF)
+# - amphetamine: mas 937984704 (절전 방지, 발표/회의용)
+# - hidden-bar:  mas 1452453066 (메뉴바 정리)
+# 위 4개는 bootstrap.sh 가 mas 로 일괄 설치

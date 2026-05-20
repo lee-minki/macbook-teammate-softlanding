@@ -1,0 +1,6 @@
+# autoresearch 실험 산출물 (대시보드, 결과 로그, 작업 사본) 제외
+autoresearch-macbook-teammate-softlanding/
+
+# macOS
+.DS_Store
+._*
