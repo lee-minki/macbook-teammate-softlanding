@@ -10,7 +10,6 @@ brew "mas"
 # === ② 개발 CLI — Python/Node/Git 베이스라인 ===
 brew "git"               # 최신 git
 brew "gh"                # GitHub CLI (Repo clone, PR, gist)
-brew "tailscale"         # 사내망 VPN
 brew "node"              # JS 런타임 + npm
 brew "python@3.11"       # 팀 표준 Python (Alarm-Checker_Server 결정. 2026-05-12)
 brew "uv"                # 빠른 pip/venv 매니저
@@ -41,6 +40,7 @@ cask "stats"             # 메뉴바 CPU/RAM/GPU/배터리/네트워크 (RunCat 
 cask "raycast"           # Spotlight 대체 + Window Mgmt + Snippets + Calc + AI
 cask "google-chrome"     # 표준 브라우저
 cask "telegram-desktop"  # 팀 정책상
+cask "tailscale-app"     # 사내망 VPN GUI 앱 — 초심자 로그인/메뉴바 흐름 기준
 
 # === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
 cask "iterm2"            # macOS 기본 Terminal 보다 훨씬 편함 (분할, 검색, 프로파일)
@@ -62,4 +62,5 @@ cask "lm-studio"         # GUI 로컬 LLM — 모델 탐색/다운로드/채팅,
 # - runcat:      mas 1429033973 (선택, Stats 가 상위 호환이라 기본 OFF)
 # - amphetamine: mas 937984704 (절전 방지, 발표/회의용)
 # - hidden-bar:  mas 1452453066 (메뉴바 정리)
-# 위 4개는 bootstrap.sh 가 mas 로 일괄 설치
+# 이 항목 중 Amphetamine/Hidden Bar 는 bootstrap.sh 가 mas 로 설치하고,
+# RunCat 은 Stats 가 상위 호환이라 기본 설치하지 않는다.

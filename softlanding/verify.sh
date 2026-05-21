@@ -46,24 +46,45 @@ v git git --version
 v gh gh --version
 v node node --version
 v npm npm --version
+v python3.11 python3.11 --version
+v uv uv --version
+v pipx pipx --version
+v mas mas version
 v jq jq --version
 v rg rg --version
 v fd fd --version
 v tree tree --version
 v wget wget --version
-v tailscale tailscale version
+if command -v tailscale >/dev/null 2>&1; then
+  chk_ok "tailscale $(tailscale version 2>&1 | head -1)"
+elif [[ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]]; then
+  chk_ok "Tailscale.app 설치됨 (GUI 앱 기준, CLI PATH 없음)"
+else
+  chk_warn "tailscale CLI 없음 — Tailscale.app 설치 여부를 아래 앱 검증에서 확인"
+fi
 
 # ── 앱 ──
 section "앱 (/Applications)"
 apps=(
+  "AltTab"
+  "Maccy"
+  "Mos"
+  "Logi Options+"
+  "Rectangle"
+  "Karabiner-Elements"
+  "Stats"
+  "Amphetamine"
+  "Hidden Bar"
+  "iTerm"
+  "Visual Studio Code"
+  "Cursor"
   "Google Chrome"
   "Raycast"
-  "Rectangle"
-  "Telegram"
+  "Telegram Desktop"
   "Claude"
   "WinMacKey"
-  "RunCat"
   "Tailscale"
+  "LM Studio"
 )
 for app in "${apps[@]}"; do
   if [[ -d "/Applications/${app}.app" ]]; then
@@ -75,13 +96,21 @@ done
 
 # ── Tailscale 상태 ──
 section "Tailscale 상태"
+TAILSCALE_BIN=""
 if command -v tailscale >/dev/null 2>&1; then
-  if tailscale status >/dev/null 2>&1; then
+  TAILSCALE_BIN="$(command -v tailscale)"
+elif [[ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]]; then
+  TAILSCALE_BIN="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
+if [[ -n "$TAILSCALE_BIN" ]]; then
+  if "$TAILSCALE_BIN" status >/dev/null 2>&1; then
     chk_ok "tailscale status OK"
-    tailscale status 2>&1 | head -5 | sed "s/^/  ${X}/;s/$/${D}/"
+    "$TAILSCALE_BIN" status 2>&1 | head -5 | sed "s/^/  ${X}/;s/$/${D}/"
   else
     chk_warn "tailscale 로그인 필요 (메뉴바 아이콘 → Log in)"
   fi
+else
+  chk_warn "Tailscale 상태 확인 불가 — Tailscale.app 설치/실행 확인"
 fi
 
 # ── Finder/Dock 설정 ──

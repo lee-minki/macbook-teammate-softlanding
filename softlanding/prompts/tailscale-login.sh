@@ -24,8 +24,15 @@ fi
 echo
 echo "잠시 후 상태를 확인합니다 (10초 대기)..."
 sleep 10
+TAILSCALE_BIN=""
 if command -v tailscale >/dev/null 2>&1; then
-  tailscale status 2>&1 | head -10
+  TAILSCALE_BIN="$(command -v tailscale)"
+elif [[ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]]; then
+  TAILSCALE_BIN="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
+
+if [[ -n "$TAILSCALE_BIN" ]]; then
+  "$TAILSCALE_BIN" status 2>&1 | head -10
 else
-  echo "${Y}tailscale CLI 미설치 — brew install tailscale 필요${D}"
+  echo "${Y}Tailscale 상태 확인 명령을 찾지 못했습니다. Tailscale.app 설치/실행을 확인하세요.${D}"
 fi

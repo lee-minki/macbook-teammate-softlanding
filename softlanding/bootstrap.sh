@@ -147,14 +147,14 @@ else
     BF="$(mktemp -t Brewfile.XXXXXX)"
     cat > "$BF" <<'BREWEOF'
 brew "mas"
-brew "git"; brew "gh"; brew "tailscale"; brew "node"
+brew "git"; brew "gh"; brew "node"
 brew "python@3.11"; brew "uv"; brew "pipx"
 brew "jq"; brew "ripgrep"; brew "fd"; brew "tree"; brew "wget"
 cask "alt-tab"; cask "maccy"; cask "the-unarchiver"
 cask "mos"; cask "logi-options-plus"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
-cask "raycast"; cask "google-chrome"; cask "telegram-desktop"
+cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "tailscale-app"
 cask "iterm2"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
 brew "ollama"; cask "lm-studio"
@@ -162,7 +162,7 @@ BREWEOF
   fi
   brew bundle --file="$BF" && ok "brew bundle 완료" || warn "brew bundle 일부 실패 — 아래 핵심 도구 자동 점검"
 
-  # ── 핵심 도구 7종 즉시 재검증 + 자동 재설치 (다음 단계가 의존하므로 필수) ──
+  # ── 핵심 CLI 6종 즉시 재검증 + 자동 재설치 (다음 단계가 의존하므로 필수) ──
   declare -a CRITICAL=(
     "git:git"
     "node:node"
@@ -170,9 +170,8 @@ BREWEOF
     "python3.11:python@3.11"
     "mas:mas"
     "gh:gh"
-    "tailscale:tailscale"
   )
-  info "핵심 도구 7종 즉시 검증"
+  info "핵심 CLI 6종 즉시 검증"
   for entry in "${CRITICAL[@]}"; do
     bin="${entry%%:*}"; pkg="${entry##*:}"
     if command -v "$bin" >/dev/null 2>&1; then

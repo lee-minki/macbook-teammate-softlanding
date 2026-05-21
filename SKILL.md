@@ -27,9 +27,9 @@ metadata:
 첫 코드블록으로 자동 설치 한 줄:
 ```bash
 cd ~/Downloads/softlanding
-GIT_NAME="..." GIT_EMAIL="..." bash softlanding/bootstrap.sh
+GIT_NAME="..." GIT_EMAIL="..." bash bootstrap.sh
 ```
-이어서 의존성 체인(Xcode CLT → Homebrew → brew bundle → 핵심 7종 → AI CLI/MLX)을 한 번 명시.
+이어서 의존성 체인(Xcode CLT → Homebrew → brew bundle → 핵심 CLI 6종 + Tailscale.app → AI CLI/MLX)을 한 번 명시.
 
 ### B. 트러블슈팅 ("X 안 됨", "Y 망가짐")
 첫 단락에 반드시:
@@ -45,13 +45,13 @@ GIT_NAME="..." GIT_EMAIL="..." bash softlanding/bootstrap.sh
 
 ### 의존성 체인 (어떤 시나리오에서도 관련되면 한 번은 언급)
 ```text
-Xcode CLT → Homebrew → brew bundle → 핵심 7종(git/node/npm/python3.11/mas/gh/tailscale)
+Xcode CLT → Homebrew → brew bundle → 핵심 CLI 6종(git/node/npm/python3.11/mas/gh) + Tailscale.app
   ├─ AI CLI(Claude Code/Codex/Gemini): node/npm 필수
   └─ MLX(mlx-lab venv): python3.11 + uv 필수, Apple Silicon 전용
 ```
 
 ### 경로 인용 규칙 (절대 어기지 않음)
-모든 파일/디렉토리는 정확한 경로로 인용한다. 누락·약식 표기 금지.
+모든 파일/디렉토리는 정확한 경로로 인용한다. 누락·약식 표기 금지. 단, 코드블록에서 직전에 `cd ~/Downloads/softlanding` 를 실행한 경우에는 실제 실행 가능한 로컬 이름(`bootstrap.sh`, `verify.sh`, `prompts/permissions-open.sh`)을 쓴다.
 
 | 올바른 인용 | 잘못된 인용 |
 |---|---|
@@ -235,13 +235,13 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 
 자동화 **가능** — `softlanding/bootstrap.sh` 가 의존성 게이트 + 자가복구로 처리:
 - Xcode CLT → Homebrew → `brew bundle` (27 패키지)
-- 핵심 7종(git/node/npm/python3.11/mas/gh/tailscale) 즉시 재검증 + 빠진 것 자동 재설치
+- 핵심 CLI 6종(git/node/npm/python3.11/mas/gh) 즉시 재검증 + 빠진 것 자동 재설치. Tailscale은 초심자 로그인 흐름을 위해 `tailscale-app` cask GUI 앱을 기본 설치
 - 윈도우 갭 메우기 cask: AltTab, Maccy, Mos, Rectangle, The Unarchiver, Logi Options+, Karabiner-Elements, Stats
 - 에디터/터미널: iTerm2, VS Code, Cursor
 - 클라우드 AI: Claude Desktop + npm globals (Claude Code/Codex/Gemini)
 - 로컬 LLM: Ollama(brew), LM Studio(cask), MLX(`~/worksapces/mlx-lab` venv, Apple Silicon 전용 — `uv pip install mlx mlx-lm`)
 - App Store(mas): Amphetamine(절전 방지), Hidden Bar(메뉴바 정리)
-- WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입(기본값은 `softlanding/bootstrap.sh` 내부). Draft 릴리스는 자동으로 건너뛴다.
+- WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입한다. 미지정 시 `softlanding/bootstrap.sh` 는 자동 설치를 건너뛰고 수동 설치 안내만 한다. Draft 릴리스는 자동으로 건너뛴다.
 - `~/worksapces/{api-server,frontend-web,infra-tools,data-pipeline,shared-lib}` + `~/.claude/workspace`
 - `defaults write` 일괄 — Finder(경로/상태 막대, 컬럼, 확장자), Dock(자동 숨김), 키 반복(가장 빠름), 자연 스크롤 OFF, 다크모드 ON, 스크린샷(PNG/그림자 제거/다운로드 폴더), .DS_Store 네트워크/USB 비생성, 24시간제
 - `pmset -c displaysleep 30 sleep 0` (sudo 가능할 때)
@@ -259,7 +259,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 ### 의존성 체인 (★ 핵심)
 
 ```text
-Xcode CLT  ─→  Homebrew  ─→  brew bundle  ─→  핵심 7종 재검증
+Xcode CLT  ─→  Homebrew  ─→  brew bundle  ─→  핵심 CLI 6종 재검증 + Tailscale.app
                                                     │
                                                     ├─→  mas (Amphetamine, Hidden Bar)
                                                     ├─→  git config (GIT_NAME/GIT_EMAIL)
@@ -292,12 +292,12 @@ bash <(curl -fsSL <URL>/bootstrap.sh)
 
 검증:
 ```bash
-bash softlanding/verify.sh
+bash verify.sh
 ```
 
 권한 페이지 일괄 오픈:
 ```bash
-bash softlanding/prompts/permissions-open.sh
+bash prompts/permissions-open.sh
 ```
 
 ## Claude Code / Codex 등록

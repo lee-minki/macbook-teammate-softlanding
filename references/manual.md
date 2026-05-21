@@ -53,7 +53,7 @@
 11. AI 도구
 12. 최종 검증과 인계
 
-## 0. Phase 0 — 딸깍 자동 설치 (v1.3.0)
+## 0. Phase 0 — 딸깍 자동 설치 (v1.4.0)
 
 ```bash
 cd ~/Downloads/softlanding
