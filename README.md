@@ -3,6 +3,9 @@
 맥(macOS)을 처음 쓰면서 **바이브 코딩(AI 보조 개발)** 을 시작하려는 사용자를 위한 Claude Code 스킬.
 MacBook/Mac mini 를 한 번에 작업 가능한 기본 환경으로 소프트랜딩시키는 절차를 담는다.
 
+> 🚀 **맥을 처음 받으셨나요?** → **[GETTING-STARTED.md](GETTING-STARTED.md)** 를 순서대로 따라 하세요.
+> 터미널이 처음이어도, 윈도우만 쓰던 사람도 됩니다. (명령 복붙 → 중간부터는 AI 가 도와줌)
+
 ## 무엇을 하나
 
 - **자동 80%**: Xcode CLT → Homebrew → `brew bundle`(에디터/터미널/윈도우 갭 메우기 앱) → Python 3.11 + uv/pipx → Git → AI CLI(Claude Code/Codex/Gemini) → 로컬 LLM(Ollama/LM Studio/MLX). 의존성 게이트 + 자가복구로 "node 없이 Claude Code 가 깔리는" 사고를 막는다.
@@ -67,6 +70,8 @@ WinMacKey 자동 설치를 원하면 GitHub Release 저장소를 환경변수로
 ```bash
 WINMACKEY_REPO="owner/repo" GIT_NAME="..." GIT_EMAIL="..." bash softlanding/bootstrap.sh
 ```
+
+WinMacKey 는 활발히 업데이트되므로, **이미 설치돼 있어도 재실행하면 최신 릴리스와 버전을 비교해 자동 갱신**한다(실행 중이면 종료 후 교체). 팀 테스트 중 새 빌드가 올라오면 같은 명령만 다시 돌리면 된다.
 
 ## 스킬로 설치
 

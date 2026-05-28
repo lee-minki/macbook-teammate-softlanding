@@ -237,7 +237,7 @@ tailscale status
 - **Logi Options+** — 로지텍 마우스/키보드 공식 (버튼 매핑, 제스처)
 
 ### 키보드 편의
-- **WinMacKey** — Windows 키감 (GitHub Release DMG, 자동 fetch)
+- **WinMacKey** — Windows 키감 (GitHub Release DMG 자동 fetch). 활발히 업데이트되므로 재실행 시 설치 버전과 최신 릴리스를 비교해 **자동 갱신** (`WINMACKEY_REPO` 필요)
 - **Karabiner-Elements** — Hyper Key/Leader Key 고급 매핑 (선택)
 
 ### 메뉴바

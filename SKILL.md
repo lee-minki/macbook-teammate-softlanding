@@ -260,7 +260,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 - 클라우드 AI: Claude Desktop + npm globals (Claude Code/Codex/Gemini)
 - 로컬 LLM: Ollama(brew), LM Studio(cask), MLX(`~/worksapces/mlx-lab` venv, Apple Silicon 전용 — `uv pip install mlx mlx-lm`)
 - App Store(mas): Amphetamine(절전 방지), Hidden Bar(메뉴바 정리)
-- WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입한다. 미지정 시 `softlanding/bootstrap.sh` 는 자동 설치를 건너뛰고 수동 설치 안내만 한다. Draft 릴리스는 자동으로 건너뛴다.
+- WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입한다. **WinMacKey 는 활발히 업데이트되므로, 이미 설치돼 있어도 설치 버전(`CFBundleShortVersionString`)과 최신 릴리스 tag 를 비교해 다르면 자동 갱신**한다(실행 중이면 종료 후 교체). 미지정 시 자동 설치를 건너뛰고 안내만 한다. Draft 릴리스는 자동으로 건너뛴다.
 - `~/worksapces/{api-server,frontend-web,infra-tools,data-pipeline,shared-lib}` + `~/.claude/workspace`
 - `defaults write` 일괄 — Finder(경로/상태 막대, 컬럼, 확장자), Dock(자동 숨김), 키 반복(가장 빠름), 자연 스크롤 OFF, 다크모드 ON, 스크린샷(PNG/그림자 제거/다운로드 폴더), .DS_Store 네트워크/USB 비생성, 24시간제
 - `pmset -c displaysleep 30 sleep 0` (sudo 가능할 때)
