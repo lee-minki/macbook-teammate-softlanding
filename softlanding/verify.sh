@@ -73,6 +73,7 @@ apps=(
   "Rectangle"
   "Karabiner-Elements"
   "Stats"
+  "RunCat"
   "Amphetamine"
   "Hidden Bar"
   "Ghostty"
@@ -81,6 +82,7 @@ apps=(
   "Google Chrome"
   "Raycast"
   "Telegram Desktop"
+  "Discord"
   "Claude"
   "WinMacKey"
   "Tailscale"
@@ -136,7 +138,7 @@ ge=$(git config --global user.email 2>/dev/null)
 
 # ── AI CLI ──
 section "AI CLI"
-for c in claude codex gemini openclaw playwright; do
+for c in claude codex gemini hermes opencode oh-my-opencode omx; do
   if command -v "$c" >/dev/null 2>&1; then
     chk_ok "$c (path: $(command -v "$c"))"
   else

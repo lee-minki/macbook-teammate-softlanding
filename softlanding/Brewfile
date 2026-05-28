@@ -26,20 +26,22 @@ cask "maccy"             # 클립보드 매니저 — 윈도우의 Win+V 대체
 cask "the-unarchiver"    # rar/7z/zip 등 모든 압축 해제
 cask "mos"               # 외부 마우스(특히 로지텍) 부드러운 스크롤 + 방향 반전 토글
 cask "logi-options+"     # 로지텍 마우스/키보드 공식 — 버튼 매핑/제스처
-cask "rectangle"         # 창 분할 (윈도우 Win+화살표 대체)
+cask "rectangle"         # 창 분할 (윈도우 Win+화살표 대체) — 무료/기본. 유료 대안=Magnet(App Store, 미설치)
 
 # === ④ 키보드 편의 (윈도우식 키감 + Hyperkey/리더키) ===
 # WinMacKey 는 brew cask 없음 → bootstrap.sh 에서 GitHub Release DMG 직접 fetch
 cask "karabiner-elements"  # Hyper Key / Leader Key 리매핑 (CapsLock → ⌘⌥⌃⇧)
 
 # === ⑤ 메뉴바 & 시스템 모니터 ===
-cask "stats"             # 메뉴바 CPU/RAM/GPU/배터리/네트워크 (RunCat 상위 호환)
+cask "stats"             # 메뉴바 CPU/RAM/GPU/배터리/네트워크 (상세 모니터)
+# RunCat 은 App Store 전용 → bootstrap.sh 에서 mas 로 설치 (id 1429033973). Stats 와 함께 사용
 # Hidden Bar 는 App Store 전용 → bootstrap.sh 에서 mas 로 설치 (id 1452453066)
 
 # === ⑥ 생산성 ===
 cask "raycast"           # Spotlight 대체 + Window Mgmt + Snippets + Calc + AI
 cask "google-chrome"     # 표준 브라우저
 cask "telegram-desktop"  # 팀 정책상
+cask "discord"           # 팀 커뮤니티/음성 채널
 cask "tailscale-app"     # 사내망 VPN GUI 앱 — 초심자 로그인/메뉴바 흐름 기준
 
 # === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
@@ -59,8 +61,7 @@ cask "lm-studio"         # GUI 로컬 LLM — 모델 탐색/다운로드/채팅,
 
 # 참고:
 # - winmackey:   WINMACKEY_REPO 환경변수가 가리키는 GitHub Release DMG 직접 다운로드 (미지정 시 skip)
-# - runcat:      mas 1429033973 (선택, Stats 가 상위 호환이라 기본 OFF)
+# - runcat:      mas 1429033973 (메뉴바 CPU 인디케이터)
 # - amphetamine: mas 937984704 (절전 방지, 발표/회의용)
 # - hidden-bar:  mas 1452453066 (메뉴바 정리)
-# 이 항목 중 Amphetamine/Hidden Bar 는 bootstrap.sh 가 mas 로 설치하고,
-# RunCat 은 Stats 가 상위 호환이라 기본 설치하지 않는다.
+# Amphetamine/Hidden Bar/RunCat 은 App Store 전용이라 bootstrap.sh 가 mas 로 설치한다.

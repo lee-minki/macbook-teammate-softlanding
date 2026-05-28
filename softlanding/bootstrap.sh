@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)            ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.5.0)            ║
 # ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
@@ -75,7 +75,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.5.0)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -154,7 +154,7 @@ cask "alt-tab"; cask "maccy"; cask "the-unarchiver"
 cask "mos"; cask "logi-options+"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
-cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "tailscale-app"
+cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "discord"; cask "tailscale-app"
 cask "ghostty"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
 brew "ollama"; cask "lm-studio"
@@ -223,7 +223,7 @@ elif ! mas account >/dev/null 2>&1; then
   warn "App Store 로그인 안 됨 — 앱을 열어 Apple ID 로그인 후 재실행"
   open -a "App Store" 2>/dev/null || true
 else
-  for entry in "937984704:Amphetamine" "1452453066:Hidden Bar"; do
+  for entry in "937984704:Amphetamine" "1452453066:Hidden Bar" "1429033973:RunCat"; do
     mas_id="${entry%%:*}"; mas_name="${entry##*:}"
     if mas list 2>/dev/null | grep -q "^${mas_id} "; then
       ok "${mas_name} 이미 설치됨"
@@ -398,27 +398,34 @@ fi
 # ────────────────────────────────────────────────────────
 # [12/14] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
 # ────────────────────────────────────────────────────────
-step "AI CLI 설치 (Claude Code / Codex / Gemini)" "node, npm"
+step "AI CLI 설치 (Claude Code / Codex / Gemini / Hermes / OpenCode / oh-my-*)" "node, npm"
 if [[ "${SKIP_AI:-0}" == "1" ]]; then
   skip "SKIP_AI=1"
 elif ! require_cmd node "brew install node"; then
-  fail "node 미설치 — Claude Code/Codex/Gemini CLI 설치 불가 (brew install node 자가복구도 실패)"
+  fail "node 미설치 — AI CLI 설치 불가 (brew install node 자가복구도 실패)"
 elif ! require_cmd npm "brew reinstall node"; then
   fail "npm 미설치 — node 가 비정상. brew reinstall node 후 재실행"
 else
   log "  node $(node --version)  npm $(npm --version)"
-  for p in "@anthropic-ai/claude-code" "@openai/codex" "@google/gemini-cli"; do
+  # 패키지:검증바이너리 (npm 글로벌)
+  declare -a AICLIS=(
+    "@anthropic-ai/claude-code:claude"
+    "@openai/codex:codex"
+    "@google/gemini-cli:gemini"
+    "hermes-agent:hermes"
+    "opencode-ai:opencode"
+    "oh-my-opencode:oh-my-opencode"
+    "oh-my-codex:omx"
+  )
+  for entry in "${AICLIS[@]}"; do
+    p="${entry%%:*}"; bin="${entry##*:}"
     info "  npm i -g $p"
     if npm install -g "$p" >/dev/null 2>&1; then
-      bin="${p##*/}"; [[ "$p" == "@anthropic-ai/claude-code" ]] && bin="claude"
-      [[ "$p" == "@openai/codex" ]] && bin="codex"
-      [[ "$p" == "@google/gemini-cli" ]] && bin="gemini"
       command -v "$bin" >/dev/null 2>&1 && ok "  $bin 설치 (path: $(command -v "$bin"))" || warn "  $p 설치는 OK 같지만 PATH 미반영"
     else
       warn "  $p 설치 실패 — 네트워크/권한 확인"
     fi
   done
-  npm install -g openclaw >/dev/null 2>&1 && ok "  openclaw" || warn "  openclaw 패키지명 변동 가능 — 수동 확인"
 fi
 
 # ────────────────────────────────────────────────────────

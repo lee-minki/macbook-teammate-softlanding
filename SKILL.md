@@ -1,6 +1,6 @@
 ---
 name: macbook-teammate-softlanding
-description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (30 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
+description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (31 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
 version: 1.5.0
 author: Hermes Agent
 license: MIT
@@ -100,7 +100,7 @@ TCC 권한(접근성/입력 모니터링/자동화), Tailscale OAuth 로그인 +
 사용한다:
 - 사용자가 맥을 처음 써서 Finder, Dock, 단축키, 앱 설치, 권한 허용부터 안내해야 할 때
 - Windows 사용자에게 MacBook Pro/Mac mini 업무 환경을 부드럽게 적응시켜야 할 때
-- `~/worksapces`, `.claude/workspace`, Tailscale, Raycast/RunCat/Chrome, Homebrew/Node/Git, Claude Code/Codex/OpenClaw 같은 표준을 단계적으로 설치/검증할 때
+- `~/worksapces`, `.claude/workspace`, Tailscale, Raycast/RunCat/Chrome, Homebrew/Node/Git, Claude Code/Codex/Hermes Agent 같은 표준을 단계적으로 설치/검증할 때
 - HTML 온보딩 문서, 설치 체크리스트, 사용자용 Quick Start, 검증표를 만들 때
 
 사용하지 않는다:
@@ -126,7 +126,7 @@ workspace folder, /Users/<account>/worksapces, .claude/workspace, hidden files, 
 Tailscale install, tailscale status, remote access basics,
 Raycast, RunCat, Chrome, Telegram optional, productivity apps,
 Homebrew latest, Node.js latest stable, npm current bundled, Git latest, Python 3.11 baseline, uv/pipx optional,
-Claude Desktop, Claude Code CLI, Codex CLI, OpenClaw CLI, Playwright CLI,
+Claude Desktop, Claude Code CLI, Codex CLI, Hermes Agent CLI, Playwright CLI,
 beginner-friendly Korean guide, screenshots, copy-paste commands, verification-first,
 no personal vault, no Bitwarden setup, no secret copying, no private account copying,
 non-destructive setup, backup before dotfile edits, team handoff, rollback notes
@@ -160,7 +160,7 @@ references/manual.md
 softlanding/                       # 자동화 자산 (이 스킬이 실행 기준)
 ├── bootstrap-min.sh               # Stage 0: Ghostty + Claude Code 까지만 (전후관계 1·2단계)
 ├── bootstrap.sh                   # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
-├── Brewfile                       # 30개 (brew 13 + cask 17)
+├── Brewfile                       # 31개 (brew 13 + cask 18)
 ├── ghostty.config                 # Ghostty 초심자 기본 config (비파괴 복사)
 ├── verify.sh                      # OK/WARN/SKIP/FAIL 체크리스트
 ├── apps-usage.md                  # 각 앱 첫 5분
@@ -194,7 +194,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 - Raycast, RunCat, Chrome, Telegram 등 생산성 앱
 - Homebrew + Node + Git
 - 원격 제어 방식
-- AI 도구 및 OpenClaw 설정
+- AI 도구 및 Hermes Agent 설정
 - 최종 검증 체크리스트
 
 ## Soft-Landing Principles
@@ -220,7 +220,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
    - 설치 성공은 끝이 아니다. `open -a`, `which`, `--version`, `tailscale status`까지 확인한다.
 
 6. 버전 기준점은 명시하되, 앱은 최신 안정판
-   - Chrome/Raycast/RunCat/Rectangle/Tailscale/Claude/Codex/OpenClaw 같은 일반 앱과 CLI는 설치 시점의 최신 안정판을 기본값으로 한다.
+   - Chrome/Raycast/RunCat/Rectangle/Tailscale/Claude/Codex/Hermes Agent 같은 일반 앱과 CLI는 설치 시점의 최신 안정판을 기본값으로 한다.
    - Node.js는 Homebrew가 제공하는 최신 안정판을 기본으로 설치한다. 별도 프로젝트가 특정 LTS를 요구할 때만 버전 매니저를 검토한다.
    - Python은 3.11을 기준점으로 둔다. “시스템 Python을 건드리지 않고 Python 3.11 사용자 공간을 추가한다”가 원칙이다.
    - 버전 숫자를 문서에 박제하지 말고, 설치 직후 `--version` 결과를 인계 문서에 기록한다.
@@ -252,7 +252,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 "딸깍"의 현실적 경계를 먼저 명시한다. 무리하게 자동화를 시도하지 않는다.
 
 자동화 **가능** — `softlanding/bootstrap.sh` 가 의존성 게이트 + 자가복구로 처리:
-- Xcode CLT → Homebrew → `brew bundle` (30 패키지)
+- Xcode CLT → Homebrew → `brew bundle` (31 패키지)
 - 핵심 CLI 6종(git/node/npm/python3.11/mas/gh) 즉시 재검증 + 빠진 것 자동 재설치. Tailscale은 초심자 로그인 흐름을 위해 `tailscale-app` cask GUI 앱을 기본 설치
 - 윈도우 갭 메우기 cask: AltTab, Maccy, Mos, Rectangle, The Unarchiver, Logi Options+, Karabiner-Elements, Stats
 - 터미널: Ghostty (GPU 가속, 초심자 첫 "명령 치는 창") + `~/.config/ghostty/config` 기본값 비파괴 작성(기존 있으면 .bak 백업 후 보존)
@@ -271,7 +271,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 - TCC 권한 토글 (접근성, 입력 모니터링, 자동화) — SIP 보호로 GUI 토글 필수
 - Tailscale OAuth 로그인 + tailnet 관리자 device 승인
 - WinMacKey 초기 권한 부여 후 첫 실행
-- Claude / Codex / Gemini / OpenClaw 각 계정 로그인
+- Claude / Codex / Gemini / Hermes Agent 각 계정 로그인
 
 → `bootstrap.sh` 마지막 단계에서 `prompts/permissions-open.sh` 안내. 그 스크립트가 권한/iCloud 페이지를 순차 자동 오픈.
 
@@ -449,7 +449,7 @@ App Store 앱  자동 업데이트/삭제가 쉬움.
 
 권장 기본:
 - WinMacKey: Windows식 키감 유지
-- Rectangle: 창 분할 관리
+- 창 분할: **Rectangle(무료, 기본 설치)** 또는 **Magnet(유료, App Store ~$9.99, 드래그 스냅 UI)** 중 하나. Magnet 은 유료라 자동 설치 안 함 — 원하면 사용자가 직접 구매. 단축키 충돌 방지로 하나만 사용.
 - Karabiner-Elements: 고급 키 리매핑이 필요한 경우에만
 - Hammerspoon: 자동화 고급 사용자에게만
 
@@ -595,12 +595,28 @@ which codex && codex --version
 npm install -g @google/gemini-cli
 which gemini && gemini --version
 
-# Playwright (브라우저 자동화/테스트)
+# Hermes Agent — self-improving AI agent (bin: hermes)
+npm install -g hermes-agent
+which hermes && hermes --version
+
+# OpenCode — 오픈소스 AI 코딩 에이전트 (bin: opencode)
+npm install -g opencode-ai
+which opencode && opencode --version
+
+# oh-my-opencode — OpenCode 멀티에이전트 하네스 (batteries-included)
+npm install -g oh-my-opencode
+
+# oh-my-codex — Codex CLI 멀티에이전트 오케스트레이션 (bin: omx)
+npm install -g oh-my-codex
+which omx && omx --version
+
+# Playwright (브라우저 자동화/테스트, 글로벌 설치 없이 npx)
 npx playwright --version
 ```
 
+- bootstrap.sh 가 위 npm 글로벌(claude/codex/gemini/hermes/opencode/oh-my-opencode/omx)을 한 번에 설치·검증한다.
 - Claude Desktop(cask)은 MCP 서버 + 로컬 파일 접근으로 데스크톱 오케스트레이션 거점.
-- Gemini CLI / OpenClaw 는 본인/조직 정책 및 토큰 비용 정책 확인 후 선택.
+- Gemini / Hermes Agent / oh-my-* 는 본인/조직 정책 및 토큰 비용 정책 확인 후 선택.
 
 ### 10-2. 로컬 LLM (MLX / Ollama / LM Studio)
 
@@ -630,7 +646,7 @@ ollama run llama3.2           # 범용
 - Claude Code 의 subagent + MCP 서버가 오케스트레이션 거점.
 - 라우팅 기본값: 빠른/민감/오프라인 작업 → 로컬(MLX/Ollama), 복잡한 추론/대규모 컨텍스트 → 클라우드(Claude/Gemini).
 - 로컬 OpenAI 호환 서버(MLX server / Ollama / LM Studio)를 endpoint 로 등록하면 같은 코드에서 로컬↔클라우드 전환 가능.
-- OpenClaw 같은 멀티-provider 게이트웨이를 쓸 경우 provider/비용 정책을 먼저 확인한다.
+- Hermes Agent / oh-my-opencode / oh-my-codex(omx) 같은 에이전트 하네스를 쓸 경우 provider/비용 정책을 먼저 확인한다.
 
 ### 원칙
 - 사용자 개인 계정으로 로그인한다. 비밀번호가 필요한 단계는 사용자가 직접 입력한다.
