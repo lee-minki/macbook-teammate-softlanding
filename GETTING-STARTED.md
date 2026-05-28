@@ -81,11 +81,10 @@
 
 ```bash
 cd ~/Downloads
-git clone https://github.com/<OWNER>/macbook-teammate-softlanding.git
+git clone https://github.com/lee-minki/macbook-teammate-softlanding.git
 ```
 
-> `<OWNER>` 는 GitHub 페이지 주소의 사용자/조직 이름입니다. 초록색 `Code` 버튼 → `HTTPS` 의 URL 을 그대로 복사해 쓰면 됩니다.
-> 처음이라 `git` 이 없다고 뜨면, 화면에 나타나는 **"설치"** 창에서 설치를 누르고 몇 분 기다린 뒤 다시 실행하세요.
+> 처음이라 `git` 이 없다고 뜨면, 화면에 나타나는 **"설치"** 창에서 설치를 누르고 몇 분 기다린 뒤 다시 실행하세요. (그게 번거로우면 위 **방법 A — ZIP** 을 쓰세요. git 이 필요 없습니다.)
 
 ### 3-2. 최소 부트스트랩 실행
 
