@@ -6,6 +6,25 @@ MacBook/Mac mini 를 한 번에 작업 가능한 기본 환경으로 소프트�
 > 🚀 **맥을 처음 받으셨나요?** → **[GETTING-STARTED.md](GETTING-STARTED.md)** 를 순서대로 따라 하세요.
 > 터미널이 처음이어도, 윈도우만 쓰던 사람도 됩니다. (명령 복붙 → 중간부터는 AI 가 도와줌)
 
+## ⚡ 빠른 시작
+
+맥에서 **터미널**을 엽니다 — `⌘`(Command) + `Space` → `터미널` 입력 → `Enter`.
+
+**방법 A — ZIP (새 맥에 가장 안전, git 불필요 · 권장)**
+1. 이 페이지 위쪽 초록색 **`Code`** → **`Download ZIP`** → 받은 파일 더블클릭(압축 풀기)
+2. 터미널에 붙여넣기:
+   ```bash
+   cd ~/Downloads/macbook-teammate-softlanding-main && bash softlanding/bootstrap-min.sh
+   ```
+
+**방법 B — git clone (한 줄)**
+```bash
+cd ~/Downloads && git clone https://github.com/lee-minki/macbook-teammate-softlanding.git && cd macbook-teammate-softlanding && bash softlanding/bootstrap-min.sh
+```
+
+끝나면 안내대로 **Ghostty** 를 열고 → `claude` 실행(로그인) → `/macbook-teammate-softlanding` 호출.
+나머지 설치·설정·권한은 Claude Code 가 함께 진행합니다. 막히면 → **[GETTING-STARTED.md](GETTING-STARTED.md)** (단계별 + FAQ).
+
 ## 무엇을 하나
 
 - **자동 80%**: Xcode CLT → Homebrew → `brew bundle`(에디터/터미널/윈도우 갭 메우기 앱) → Python 3.11 + uv/pipx → Git → AI CLI(Claude Code/Codex/Gemini) → 로컬 LLM(Ollama/LM Studio/MLX). 의존성 게이트 + 자가복구로 "node 없이 Claude Code 가 깔리는" 사고를 막는다.
@@ -42,17 +61,12 @@ softlanding/                      # 실행 자산 (딸깍 설치)
 3. 스킬 주도    → Claude Code 에서 이 스킬 호출 → 나머지(앱·설정·권한)를 AI 가 진행
 ```
 
-```bash
-# 1~2단계만 빠르게 (Ghostty + Claude Code 까지)
-bash softlanding/bootstrap-min.sh
-# → Ghostty 열고 `claude` 실행 → /macbook-teammate-softlanding 호출
-```
+> 실제 복붙 명령은 위 **⚡ 빠른 시작** 참고. `bootstrap-min.sh` 가 1~2단계(Ghostty + Claude Code), `bootstrap.sh` 가 전체(14단계).
 
 ## 딸깍 설치
 
 ```bash
-# <OWNER> 는 이 저장소 주소로 교체 (GitHub 의 Code 버튼에서 URL 복사)
-git clone https://github.com/<OWNER>/macbook-teammate-softlanding.git
+git clone https://github.com/lee-minki/macbook-teammate-softlanding.git
 cd macbook-teammate-softlanding
 GIT_NAME="본인이름" GIT_EMAIL="본인메일" bash softlanding/bootstrap.sh
 ```

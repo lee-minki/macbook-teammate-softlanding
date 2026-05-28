@@ -300,9 +300,10 @@ bash bootstrap-min.sh
 cd ~/Downloads/softlanding
 GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" bash bootstrap.sh
 
-# 원격 (public mirror 가 있다면)
-GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" \
-bash <(curl -fsSL <URL>/bootstrap.sh)
+# 원격에서 바로 받기 (clone — 권장. bootstrap.sh 는 같은 폴더의 Brewfile/ghostty.config/prompts 를 참조)
+git clone https://github.com/lee-minki/macbook-teammate-softlanding.git
+cd macbook-teammate-softlanding
+GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" bash softlanding/bootstrap.sh
 ```
 
 옵션:
