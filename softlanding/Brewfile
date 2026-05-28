@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing Brewfile (v1.3.1)                         ║
+# ║  MacBook Soft-Landing Brewfile (v1.4.0)                         ║
 # ║  대상: Windows에서 넘어온 사용자가 팀 표준 베이스라인 1회 설치          ║
 # ║  사용: brew bundle --file=Brewfile  (bootstrap.sh 가 자동 호출)       ║
 # ╚══════════════════════════════════════════════════════════════════════╝
@@ -43,7 +43,7 @@ cask "telegram-desktop"  # 팀 정책상
 cask "tailscale-app"     # 사내망 VPN GUI 앱 — 초심자 로그인/메뉴바 흐름 기준
 
 # === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
-cask "iterm2"            # macOS 기본 Terminal 보다 훨씬 편함 (분할, 검색, 프로파일)
+cask "ghostty"           # 터미널 — GPU 가속, 빠르고 단순. 초심자 첫 "명령 치는 창"
 cask "visual-studio-code"  # 표준 에디터
 cask "cursor"            # AI-native 에디터 (Claude/GPT 통합)
 

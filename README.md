@@ -17,14 +17,32 @@ references/
 ├── manual.md                     # 현장 실행 운영 매뉴얼
 └── mac-beginner-baseline.md      # 초심자 베이스라인 보정 노트
 softlanding/                      # 실행 자산 (딸깍 설치)
-├── bootstrap.sh                  # 13단계, 의존성 게이트 + 자가복구
-├── Brewfile                      # brew bundle 정의
+├── bootstrap-min.sh              # Stage 0: Ghostty + Claude Code 까지만
+├── bootstrap.sh                  # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
+├── Brewfile                      # brew bundle 정의 (30개)
+├── ghostty.config                # Ghostty 초심자 기본 config (비파괴 복사)
 ├── verify.sh                     # 설치 검증 (OK/WARN/SKIP/FAIL)
 ├── apps-usage.md                 # 각 앱 첫 5분
 ├── windows-to-mac-survival.md    # 윈도우 사용자 12가지 함정
 ├── install-skill.sh              # 스킬을 ~/.claude/skills 등에 설치
 ├── package.sh                    # 배포용 .tar.gz 패키징
 └── prompts/                      # 권한/로그인 안내 헬퍼
+```
+
+## 시작 순서 (전후관계)
+
+맥을 처음 켰다면 이 순서로 풀립니다. 핵심은 **먼저 Claude Code 를 띄우고, 나머지는 AI 가 돕게** 하는 것:
+
+```
+1. 터미널 확보  → Ghostty        "명령을 칠 창"
+2. AI 조수 확보 → Claude Code    "이제 명령을 외울 필요가 없다"
+3. 스킬 주도    → Claude Code 에서 이 스킬 호출 → 나머지(앱·설정·권한)를 AI 가 진행
+```
+
+```bash
+# 1~2단계만 빠르게 (Ghostty + Claude Code 까지)
+bash softlanding/bootstrap-min.sh
+# → Ghostty 열고 `claude` 실행 → /macbook-teammate-softlanding 호출
 ```
 
 ## 딸깍 설치

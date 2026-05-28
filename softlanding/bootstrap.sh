@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.3.2)            ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)            ║
 # ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
@@ -33,7 +33,7 @@ else
   C_RESET=''; C_BOLD=''; C_G=''; C_Y=''; C_R=''; C_B=''; C_X=''
 fi
 
-STEP=0; TOTAL=13
+STEP=0; TOTAL=14
 SUMMARY=(); FAIL=0; SKIPPED=0
 log()  { printf "${C_X}%s${C_RESET}\n" "$*"; }
 info() { printf "${C_B}ℹ${C_RESET} %s\n" "$*"; }
@@ -75,7 +75,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.3.2)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -84,12 +84,12 @@ ARCH="$(uname -m)"
 log "사용자: $(whoami)   컴퓨터: $(scutil --get ComputerName 2>/dev/null || hostname)"
 log "macOS:  $(sw_vers -productVersion) ($ARCH)"
 log ""
-log "흐름: Xcode CLT → Homebrew → brew bundle → mas → WinMacKey →"
+log "흐름: Xcode CLT → Homebrew → brew bundle → Ghostty설정 → mas → WinMacKey →"
 log "      폴더 → defaults → 절전 → Git → Python 검증 → AI CLI → 로컬 LLM → 안내"
 log "각 단계는 이전 단계가 실패하면 자동으로 자가 복구 후 재시도하거나 skip 됩니다."
 
 # ────────────────────────────────────────────────────────
-# [1/13] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
+# [1/14] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
 # ────────────────────────────────────────────────────────
 step "Xcode Command Line Tools" "최상위 의존성"
 if xcode-select -p >/dev/null 2>&1; then
@@ -107,7 +107,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [2/13] Homebrew — 거의 모든 후속 단계가 의존
+# [2/14] Homebrew — 거의 모든 후속 단계가 의존
 # ────────────────────────────────────────────────────────
 step "Homebrew" "Xcode CLT"
 if command -v brew >/dev/null 2>&1; then
@@ -135,7 +135,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [3/13] brew bundle — formulae + casks 일괄
+# [3/14] brew bundle — formulae + casks 일괄
 # ────────────────────────────────────────────────────────
 step "brew bundle (CLI + 앱 일괄)" "Homebrew"
 if [[ "$BREW_OK" != "1" ]]; then
@@ -155,7 +155,7 @@ cask "mos"; cask "logi-options+"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
 cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "tailscale-app"
-cask "iterm2"; cask "visual-studio-code"; cask "cursor"
+cask "ghostty"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
 brew "ollama"; cask "lm-studio"
 BREWEOF
@@ -185,7 +185,34 @@ BREWEOF
 fi
 
 # ────────────────────────────────────────────────────────
-# [4/13] App Store 앱 (mas)
+# [4/14] Ghostty 기본 config — 첫 터미널을 보기 좋게 (비파괴)
+# ────────────────────────────────────────────────────────
+step "Ghostty 기본 설정" "ghostty(brew bundle), 비파괴"
+GHOSTTY_DIR="$HOME/.config/ghostty"; GHOSTTY_CFG="$GHOSTTY_DIR/config"
+mkdir -p "$GHOSTTY_DIR"
+if [[ -f "$GHOSTTY_CFG" ]]; then
+  cp "$GHOSTTY_CFG" "${GHOSTTY_CFG}.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null
+  skip "기존 Ghostty config 보존 (백업 .bak 생성) — 덮어쓰지 않음"
+elif [[ -f "${SCRIPT_DIR}/ghostty.config" ]]; then
+  cp "${SCRIPT_DIR}/ghostty.config" "$GHOSTTY_CFG" \
+    && ok "Ghostty 기본 config 생성 ($GHOSTTY_CFG)" || warn "Ghostty config 복사 실패"
+else
+  cat > "$GHOSTTY_CFG" <<'GHOEOF'
+theme = catppuccin-mocha
+font-family = JetBrains Mono
+font-size = 14
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.96
+cursor-style = block
+copy-on-select = true
+macos-option-as-alt = true
+GHOEOF
+  ok "Ghostty 기본 config 생성 (인라인, $GHOSTTY_CFG)"
+fi
+
+# ────────────────────────────────────────────────────────
+# [5/14] App Store 앱 (mas)
 # ────────────────────────────────────────────────────────
 step "App Store 앱 (mas)" "mas, Apple ID 로그인"
 if [[ "${SKIP_MAS:-0}" == "1" ]]; then
@@ -207,7 +234,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [5/13] WinMacKey (GitHub Release DMG)
+# [6/14] WinMacKey (GitHub Release DMG)
 # ────────────────────────────────────────────────────────
 step "WinMacKey (GitHub Release DMG)" "curl 또는 gh, WINMACKEY_REPO 환경변수"
 # WinMacKey 저장소는 환경변수로 주입한다 (예: WINMACKEY_REPO="owner/repo").
@@ -244,7 +271,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [6/13] 작업 폴더
+# [7/14] 작업 폴더
 # ────────────────────────────────────────────────────────
 step "팀 표준 작업 폴더" "없음"
 mkdir -p "$HOME/worksapces/api-server" \
@@ -256,7 +283,7 @@ mkdir -p "$HOME/worksapces/api-server" \
 ok "~/worksapces + ~/.claude/workspace 준비됨"
 
 # ────────────────────────────────────────────────────────
-# [7/13] defaults write
+# [8/14] defaults write
 # ────────────────────────────────────────────────────────
 step "macOS 기본값 (Finder/Dock/스크롤/다크모드/캡처)" "없음"
 if [[ "${SKIP_DEFAULTS:-0}" == "1" ]]; then
@@ -298,7 +325,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [8/13] 절전 정책
+# [9/14] 절전 정책
 # ────────────────────────────────────────────────────────
 step "절전 정책 (AC 어댑터)" "pmset, sudo"
 if command -v pmset >/dev/null 2>&1; then
@@ -308,7 +335,7 @@ if command -v pmset >/dev/null 2>&1; then
 fi
 
 # ────────────────────────────────────────────────────────
-# [9/13] Git 기본 설정
+# [10/14] Git 기본 설정
 # ────────────────────────────────────────────────────────
 step "Git 설정" "git"
 if ! require_cmd git "brew install git"; then
@@ -331,7 +358,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [10/13] Python 3.11 검증
+# [11/14] Python 3.11 검증
 # ────────────────────────────────────────────────────────
 step "Python 3.11 검증" "brew, python@3.11"
 if require_cmd python3.11 "brew install python@3.11"; then
@@ -343,7 +370,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [11/13] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
+# [12/14] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
 # ────────────────────────────────────────────────────────
 step "AI CLI 설치 (Claude Code / Codex / Gemini)" "node, npm"
 if [[ "${SKIP_AI:-0}" == "1" ]]; then
@@ -369,7 +396,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [12/13] MLX 로컬 LLM 환경 (Apple Silicon) + Ollama
+# [13/14] MLX 로컬 LLM 환경 (Apple Silicon) + Ollama
 # ────────────────────────────────────────────────────────
 step "로컬 LLM (MLX venv + Ollama)" "python3.11, uv (MLX는 Apple Silicon 전용)"
 if [[ "${SKIP_MLX:-0}" == "1" ]]; then
@@ -410,7 +437,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [13/13] 수동 단계 안내
+# [14/14] 수동 단계 안내
 # ────────────────────────────────────────────────────────
 step "수동 단계 안내 (자동화 불가)" "사용자"
 cat <<EOF
@@ -456,4 +483,11 @@ printf "  ${C_BOLD}bash %s/verify.sh${C_RESET}\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}bash %s/prompts/permissions-open.sh${C_RESET}\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}open %s/apps-usage.md${C_RESET}             (각 앱 첫걸음)\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}open %s/windows-to-mac-survival.md${C_RESET}  (윈도우 사용자 생존 가이드)\n" "$SCRIPT_DIR"
+
+printf "\n${C_BOLD}━━ 여기서부터는 Claude Code 가 도와줍니다 ━━${C_RESET}\n"
+printf "  1) ${C_BOLD}Ghostty${C_RESET} 를 엽니다 (⌘Space → ghostty)\n"
+printf "  2) ${C_BOLD}claude${C_RESET} 를 실행해 로그인합니다\n"
+printf "  3) ${C_BOLD}/macbook-teammate-softlanding${C_RESET} 스킬을 호출하면, 권한 ON·로그인 등\n"
+printf "     남은 수동 20%%를 Claude Code 가 설명하며 함께 진행합니다.\n"
+printf "  ${C_X}→ 이제 명령을 외울 필요 없이, 하고 싶은 걸 claude 에게 말하면 됩니다.${C_RESET}\n"
 exit 0

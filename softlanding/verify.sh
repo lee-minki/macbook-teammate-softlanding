@@ -75,7 +75,7 @@ apps=(
   "Stats"
   "Amphetamine"
   "Hidden Bar"
-  "iTerm"
+  "Ghostty"
   "Visual Studio Code"
   "Cursor"
   "Google Chrome"
@@ -125,6 +125,7 @@ h24=$(defaults read NSGlobalDomain AppleICUForce24HourTime 2>/dev/null || echo "
 [[ "$h24" == "1" ]] && chk_ok "24시간제 ON" || chk_warn "24시간제 OFF"
 dh=$(defaults read com.apple.dock autohide 2>/dev/null || echo "0")
 [[ "$dh" == "1" ]] && chk_ok "Dock 자동 숨김 ON" || chk_warn "Dock 자동 숨김 OFF"
+[[ -f "$HOME/.config/ghostty/config" ]] && chk_ok "Ghostty config" || chk_warn "Ghostty config 없음 (~/.config/ghostty/config)"
 
 # ── Git 설정 ──
 section "Git 설정"

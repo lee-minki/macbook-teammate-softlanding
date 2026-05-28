@@ -53,10 +53,18 @@
 11. AI 도구
 12. 최종 검증과 인계
 
-## 0. Phase 0 — 딸깍 자동 설치 (v1.4.0)
+## 0. Phase 0 — 딸깍 자동 설치 (v1.5.0)
+
+전후관계: **터미널(Ghostty) → Claude Code → 이 스킬이 나머지 주도.** 진짜 초심자는 옵션 A 로 Claude Code 까지만 띄운 뒤, 나머지는 Claude Code 에서 이 스킬을 호출해 대화식으로 진행하는 것을 권장한다.
 
 ```bash
 cd ~/Downloads/softlanding
+
+# 옵션 A — 최소: 터미널(Ghostty) + Claude Code 까지만
+bash bootstrap-min.sh
+# → Ghostty 열고 `claude` 실행 → /macbook-teammate-softlanding 호출 → 나머지는 AI 주도
+
+# 옵션 B — 풀: 0~3단계 전부 한 방에
 GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" bash bootstrap.sh
 bash verify.sh
 bash prompts/permissions-open.sh
@@ -238,7 +246,7 @@ tailscale status
 - **Amphetamine** — 절전 방지 (App Store, 발표/회의/긴 다운로드)
 
 ### 에디터/터미널
-- **iTerm2** — 표준 터미널 (분할, 검색, 프로파일)
+- **Ghostty** — 표준 터미널. GPU 가속, 빠르고 단순. 초심자가 처음 "명령을 치는 창". `~/.config/ghostty/config` 에 기본값 자동 작성(비파괴)
 - **VS Code** — 표준 에디터. `code` 명령 PATH 등록 필요 (`⌘⇧P → Install code command`)
 - **Cursor** — AI-native 에디터 (Claude/GPT 통합)
 
@@ -256,7 +264,7 @@ open -a "Rectangle" || true
 open -a "Mos" || true
 open -a "Stats" || true
 open -a "Amphetamine" || true
-open -a "iTerm" || true
+open -a "Ghostty" || true
 open -a "Visual Studio Code" || true
 open -a "Cursor" || true
 open -a "Raycast" || true
