@@ -27,7 +27,7 @@
 | npm | Node와 함께 설치되는 bundled 버전 |
 | Git/jq/rg/fd/tree/wget | Homebrew 최신 formula |
 | Raycast/RunCat/Chrome/Rectangle/Tailscale | 설치 시점 최신 안정판 |
-| Claude/Codex/OpenClaw/Playwright | 설치 시점 최신 안정판, 팀 계정/정책 기준 |
+| Claude/Codex/Hermes Agent/Playwright | 설치 시점 최신 안정판, 팀 계정/정책 기준 |
 
 원칙:
 - `/usr/bin/python3`는 건드리지 않는다.
@@ -71,7 +71,7 @@ bash prompts/permissions-open.sh
 ```
 
 자동 처리:
-- Xcode CLT → Homebrew → 30개 앱/CLI(brew bundle) → mas 2개(Amphetamine, Hidden Bar) → WinMacKey DMG
+- Xcode CLT → Homebrew → 31개 앱/CLI(brew bundle) → mas 3개(Amphetamine, Hidden Bar, RunCat) → WinMacKey DMG
 - 폴더 구조, Finder/Dock/스크롤/다크모드/캡처 defaults
 - Python 3.11 + uv + pipx
 - Git 설정 (환경변수)
@@ -231,7 +231,7 @@ tailscale status
 ### 윈도우→맥 갭 메우기 (이것만큼은 반드시)
 - **AltTab** — ⌘Tab 을 "창 단위" 로 (윈도우 Alt+Tab 그대로). 손쉬운 사용 권한 필요
 - **Maccy** — 클립보드 히스토리 (윈도우 Win+V 대체). 손쉬운 사용 권한 필요
-- **Rectangle** — 창 분할 (`⌃⌥←`, `⌃⌥→`, `⌃⌥Enter`)
+- **Rectangle** — 창 분할 (`⌃⌥←`, `⌃⌥→`, `⌃⌥Enter`). **무료/기본**. 유료 대안 **Magnet**(App Store ~$9.99, 드래그 스냅) — 원하면 직접 구매, 둘 중 하나만
 - **The Unarchiver** — rar/7z 압축 해제
 - **Mos** — 외부 마우스 부드러운 스크롤 + 방향 반전 (로지텍 사용자 필수)
 - **Logi Options+** — 로지텍 마우스/키보드 공식 (버튼 매핑, 제스처)
@@ -241,7 +241,8 @@ tailscale status
 - **Karabiner-Elements** — Hyper Key/Leader Key 고급 매핑 (선택)
 
 ### 메뉴바
-- **Stats** — CPU/RAM/GPU/배터리/네트워크 실시간 (RunCat 상위 호환)
+- **Stats** — CPU/RAM/GPU/배터리/네트워크 실시간 (상세 모니터)
+- **RunCat** — 메뉴바 CPU 부하 인디케이터(달리는 고양이). Stats 와 함께 사용 (App Store)
 - **Hidden Bar** — 메뉴바 아이콘 정리 (App Store)
 - **Amphetamine** — 절전 방지 (App Store, 발표/회의/긴 다운로드)
 
@@ -254,6 +255,7 @@ tailscale status
 - **Raycast** — Spotlight 강화. 시스템 Spotlight 단축키 해제 후 `⌘Space` 잡기
 - **Google Chrome** — 업무/개인 프로필 분리 권장
 - **Telegram Desktop** — 팀 정책상 필요할 때만
+- **Discord** — 팀 커뮤니티/음성 채널
 
 검증:
 
@@ -322,12 +324,16 @@ git config --global init.defaultBranch main
 
 ## 11. AI 도구
 
-후보:
-- Claude Desktop
-- Claude Code CLI
-- Codex CLI
-- OpenClaw CLI
-- Playwright CLI
+후보 (npm 글로벌은 bootstrap.sh 가 일괄 설치):
+- Claude Desktop (cask)
+- Claude Code CLI (`claude`)
+- Codex CLI (`codex`)
+- Gemini CLI (`gemini`)
+- Hermes Agent (`hermes`, self-improving AI agent)
+- OpenCode (`opencode`, opencode-ai)
+- oh-my-opencode (OpenCode 멀티에이전트 하네스)
+- oh-my-codex (`omx`, Codex 멀티에이전트 오케스트레이션)
+- Playwright (`npx playwright`)
 
 검증 예시:
 

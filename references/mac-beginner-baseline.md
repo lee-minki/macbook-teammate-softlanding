@@ -26,7 +26,7 @@ Session-derived guidance for `macbook-teammate-softlanding`.
 5. Team workspace: `/Users/<account>/worksapces` and `~/.claude/workspace`.
 6. Productivity tools: Raycast, RunCat, Chrome, Rectangle, WinMacKey; Tailscale if team networking requires it.
 7. Developer baseline: Homebrew latest, Python 3.11, Node latest stable, Git and CLI utilities.
-8. AI tools only after basics: Claude Desktop/Code, Codex, OpenClaw, Playwright; user enters credentials directly.
+8. AI tools only after basics: Claude Desktop/Code, Codex, Hermes Agent, Playwright; user enters credentials directly.
 9. Verification-first handoff: record `--version` outputs instead of hard-coding dated exact versions.
 
 ## Copyable Baseline Commands
