@@ -8,13 +8,13 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 
 ## 🧑‍💻 개발 도구
 
-### iTerm2 — 터미널 (`⌘Space → iTerm`)
-- **왜?** macOS 기본 Terminal.app 보다 분할, 검색, 프로파일, 단축키가 압도적
-- 첫 설정:
-  - `⌘,` → Profiles → Default → Window 폭/높이 조정
-  - Hotkey 활성화: Profiles → Keys → Hotkey → `⌥Space` 추천 (Raycast 안 쓰면)
-  - Color preset: One Dark 또는 Solarized Dark
-- 핵심 단축키: `⌘D` 세로 분할, `⌘⇧D` 가로 분할, `⌘F` 검색
+### Ghostty — 터미널 (`⌘Space → ghostty`)
+- **왜?** 초심자가 처음 "명령을 치는 창". GPU 가속으로 빠르고, 설정이 단순한 텍스트 파일 하나
+- **순서상 가장 먼저**: 터미널이 있어야 `claude`(Claude Code)를 띄우고, 그다음 이 스킬로 나머지를 진행한다
+- 기본 설정 자동 적용: bootstrap 이 `~/.config/ghostty/config` 에 초심자 기본값을 비파괴로 작성(기존 파일은 `.bak` 백업 후 보존)
+  - 테마 catppuccin-mocha, 내장 JetBrains Mono 14pt, `macos-option-as-alt`(개발용 ⌥키)
+- 핵심 단축키: `⌘T` 새 탭, `⌘D` 세로 분할, `⌘⇧D` 가로 분할, `⌘⇧,` 설정 리로드
+- 더 바꾸려면 `~/.config/ghostty/config` 편집 후 `⌘⇧,` 또는 재실행
 
 ### Visual Studio Code — 표준 에디터 (`⌘Space → Code`)
 - **왜?** 사실상 표준. 거의 모든 언어/프레임워크 지원
@@ -175,7 +175,7 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 
 ### Tailscale — 사내망 VPN
 - 메뉴바 아이콘 → Log in → 회사 계정 OAuth
-- 관리자(민기)가 device 승인하면 즉시 사내 서버 접근 가능
+- tailnet 관리자가 device 승인하면 즉시 사내 서버 접근 가능
 - 터미널: `tailscale status`, `tailscale ip`, `tailscale ping <hostname>`
 
 ### Raycast — Spotlight 강화

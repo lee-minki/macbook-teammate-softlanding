@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.3.1)            ║
-# ║  대상: Windows 에서 넘어온 사용자, "민기 표준" 베이스라인 1회 자동    ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)            ║
+# ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
 # ║  ① 의존성 체인 보장 — 이전 단계가 깨지면 자가 복구 시도, 그래도       ║
@@ -33,7 +33,7 @@ else
   C_RESET=''; C_BOLD=''; C_G=''; C_Y=''; C_R=''; C_B=''; C_X=''
 fi
 
-STEP=0; TOTAL=13
+STEP=0; TOTAL=14
 SUMMARY=(); FAIL=0; SKIPPED=0
 log()  { printf "${C_X}%s${C_RESET}\n" "$*"; }
 info() { printf "${C_B}ℹ${C_RESET} %s\n" "$*"; }
@@ -75,7 +75,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.3.1)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.4.0)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -84,12 +84,12 @@ ARCH="$(uname -m)"
 log "사용자: $(whoami)   컴퓨터: $(scutil --get ComputerName 2>/dev/null || hostname)"
 log "macOS:  $(sw_vers -productVersion) ($ARCH)"
 log ""
-log "흐름: Xcode CLT → Homebrew → brew bundle → mas → WinMacKey →"
-log "      폴더 → defaults → 절전 → Git → Python 검증 → AI CLI → 안내"
+log "흐름: Xcode CLT → Homebrew → brew bundle → Ghostty설정 → mas → WinMacKey →"
+log "      폴더 → defaults → 절전 → Git → Python 검증 → AI CLI → 로컬 LLM → 안내"
 log "각 단계는 이전 단계가 실패하면 자동으로 자가 복구 후 재시도하거나 skip 됩니다."
 
 # ────────────────────────────────────────────────────────
-# [1/12] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
+# [1/14] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
 # ────────────────────────────────────────────────────────
 step "Xcode Command Line Tools" "최상위 의존성"
 if xcode-select -p >/dev/null 2>&1; then
@@ -107,7 +107,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [2/12] Homebrew — 거의 모든 후속 단계가 의존
+# [2/14] Homebrew — 거의 모든 후속 단계가 의존
 # ────────────────────────────────────────────────────────
 step "Homebrew" "Xcode CLT"
 if command -v brew >/dev/null 2>&1; then
@@ -135,7 +135,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [3/12] brew bundle — formulae + casks 일괄
+# [3/14] brew bundle — formulae + casks 일괄
 # ────────────────────────────────────────────────────────
 step "brew bundle (CLI + 앱 일괄)" "Homebrew"
 if [[ "$BREW_OK" != "1" ]]; then
@@ -151,11 +151,11 @@ brew "git"; brew "gh"; brew "node"
 brew "python@3.11"; brew "uv"; brew "pipx"
 brew "jq"; brew "ripgrep"; brew "fd"; brew "tree"; brew "wget"
 cask "alt-tab"; cask "maccy"; cask "the-unarchiver"
-cask "mos"; cask "logi-options-plus"; cask "rectangle"
+cask "mos"; cask "logi-options+"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
 cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "tailscale-app"
-cask "iterm2"; cask "visual-studio-code"; cask "cursor"
+cask "ghostty"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
 brew "ollama"; cask "lm-studio"
 BREWEOF
@@ -185,7 +185,34 @@ BREWEOF
 fi
 
 # ────────────────────────────────────────────────────────
-# [4/12] App Store 앱 (mas)
+# [4/14] Ghostty 기본 config — 첫 터미널을 보기 좋게 (비파괴)
+# ────────────────────────────────────────────────────────
+step "Ghostty 기본 설정" "ghostty(brew bundle), 비파괴"
+GHOSTTY_DIR="$HOME/.config/ghostty"; GHOSTTY_CFG="$GHOSTTY_DIR/config"
+mkdir -p "$GHOSTTY_DIR"
+if [[ -f "$GHOSTTY_CFG" ]]; then
+  cp "$GHOSTTY_CFG" "${GHOSTTY_CFG}.bak.$(date +%Y%m%d_%H%M%S)" 2>/dev/null
+  skip "기존 Ghostty config 보존 (백업 .bak 생성) — 덮어쓰지 않음"
+elif [[ -f "${SCRIPT_DIR}/ghostty.config" ]]; then
+  cp "${SCRIPT_DIR}/ghostty.config" "$GHOSTTY_CFG" \
+    && ok "Ghostty 기본 config 생성 ($GHOSTTY_CFG)" || warn "Ghostty config 복사 실패"
+else
+  cat > "$GHOSTTY_CFG" <<'GHOEOF'
+theme = catppuccin-mocha
+font-family = JetBrains Mono
+font-size = 14
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.96
+cursor-style = block
+copy-on-select = true
+macos-option-as-alt = true
+GHOEOF
+  ok "Ghostty 기본 config 생성 (인라인, $GHOSTTY_CFG)"
+fi
+
+# ────────────────────────────────────────────────────────
+# [5/14] App Store 앱 (mas)
 # ────────────────────────────────────────────────────────
 step "App Store 앱 (mas)" "mas, Apple ID 로그인"
 if [[ "${SKIP_MAS:-0}" == "1" ]]; then
@@ -207,44 +234,70 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [5/12] WinMacKey (GitHub Release DMG)
+# [6/14] WinMacKey (GitHub Release — 항상 최신 확인/갱신)
 # ────────────────────────────────────────────────────────
-step "WinMacKey (GitHub Release DMG)" "curl 또는 gh, WINMACKEY_REPO 환경변수"
-# WinMacKey 저장소는 환경변수로 주입한다 (예: WINMACKEY_REPO="owner/repo").
-# 미지정 시 자동 다운로드를 건너뛰고 안내만 한다 — 특정 개인/조직 저장소를 하드코딩하지 않음.
+step "WinMacKey (GitHub Release — 항상 최신 확인/갱신)" "curl 또는 gh, WINMACKEY_REPO 환경변수"
+# WinMacKey 는 활발히 업데이트되므로, 이미 설치돼 있어도 매번 최신 릴리스를 확인해 갱신한다.
+# 저장소는 환경변수로 주입 (예: WINMACKEY_REPO="owner/repo"). 미지정 시 skip — repo 하드코딩 안 함.
 WM_REPO="${WINMACKEY_REPO:-}"
-if [[ -d "/Applications/WinMacKey.app" ]]; then
-  ok "WinMacKey 이미 설치됨"
-elif [[ -z "$WM_REPO" ]]; then
-  skip "WINMACKEY_REPO 미지정 — WinMacKey 자동 설치 건너뜀 (WINMACKEY_REPO=\"owner/repo\" 로 지정하거나 수동 설치)"
-elif ! command -v curl >/dev/null 2>&1; then
-  skip "curl 없음 — WinMacKey 자동 다운로드 불가"
-else
-  WD="$(mktemp -d -t winmackey.XXXXXX)"; DMG=""
-  if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
-    (cd "$WD" && gh release download --repo "$WM_REPO" --pattern '*.dmg' >/dev/null 2>&1) \
-      && DMG="$(ls "$WD"/*.dmg 2>/dev/null | head -1)"
-  fi
-  if [[ -z "$DMG" ]]; then
-    URL="$(curl -fsSL "https://api.github.com/repos/${WM_REPO}/releases/latest" 2>/dev/null \
-      | grep -oE '"browser_download_url":[[:space:]]*"[^"]+\.dmg"' | head -1 | cut -d'"' -f4)"
-    [[ -n "$URL" ]] && curl -fsSL -o "$WD/WinMacKey.dmg" "$URL" && DMG="$WD/WinMacKey.dmg"
-  fi
-  if [[ -n "$DMG" && -f "$DMG" ]]; then
-    MNT="$(hdiutil attach -nobrowse -noverify -noautoopen "$DMG" | awk '/\/Volumes\//{print $NF; exit}')"
-    if [[ -n "$MNT" ]]; then
-      APP="$(ls -d "$MNT"/*.app 2>/dev/null | head -1)"
-      [[ -n "$APP" ]] && cp -R "$APP" /Applications/ && ok "WinMacKey 설치 완료" || fail "WinMacKey 복사 실패"
-      hdiutil detach "$MNT" >/dev/null 2>&1 || true
-    else fail "WinMacKey DMG 마운트 실패"; fi
+WM_APP="/Applications/WinMacKey.app"
+wm_installed_ver=""
+[[ -d "$WM_APP" ]] && wm_installed_ver="$(defaults read "$WM_APP/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "")"
+
+# DMG 1개를 받아 /Applications 에 (재)설치 — 실행 중이면 종료 후 교체. $1=dmg 경로
+wm_install_from_dmg() {
+  local dmg="$1" mnt app
+  mnt="$(hdiutil attach -nobrowse -noverify -noautoopen "$dmg" 2>/dev/null | awk '/\/Volumes\//{print $NF; exit}')"
+  [[ -z "$mnt" ]] && { fail "WinMacKey DMG 마운트 실패"; return 1; }
+  app="$(ls -d "$mnt"/*.app 2>/dev/null | head -1)"
+  if [[ -n "$app" ]]; then
+    osascript -e 'tell application "WinMacKey" to quit' >/dev/null 2>&1 || true
+    rm -rf "$WM_APP" 2>/dev/null
+    cp -R "$app" /Applications/ && ok "WinMacKey 설치/갱신 완료" || fail "WinMacKey 복사 실패"
   else
-    warn "WinMacKey DMG 자동 다운로드 실패 — 릴리스 페이지를 엽니다"
-    open "https://github.com/${WM_REPO}/releases/latest" 2>/dev/null || true
+    fail "DMG 안에서 .app 을 못 찾음"
+  fi
+  hdiutil detach "$mnt" >/dev/null 2>&1 || true
+}
+
+if [[ -z "$WM_REPO" ]]; then
+  if [[ -d "$WM_APP" ]]; then ok "WinMacKey 설치됨 (v${wm_installed_ver:-?}) — WINMACKEY_REPO 미지정이라 최신 확인은 생략"
+  else skip "WINMACKEY_REPO 미지정 — WinMacKey 건너뜀 (WINMACKEY_REPO=\"owner/repo\" 로 지정)"; fi
+elif ! command -v curl >/dev/null 2>&1; then
+  skip "curl 없음 — WinMacKey 최신 확인/다운로드 불가"
+else
+  # 최신 릴리스 메타데이터 1회 조회 → 버전 비교
+  WM_META="$(curl -fsSL "https://api.github.com/repos/${WM_REPO}/releases/latest" 2>/dev/null)"
+  wm_latest_ver="$(printf '%s' "$WM_META" | grep -oE '"tag_name":[[:space:]]*"[^"]+"' | head -1 | cut -d'"' -f4)"
+  wm_latest_ver="${wm_latest_ver#v}"
+  if [[ -n "$wm_installed_ver" && -n "$wm_latest_ver" && "$wm_installed_ver" == "$wm_latest_ver" ]]; then
+    ok "WinMacKey 최신 (v$wm_installed_ver)"
+  else
+    [[ -n "$wm_installed_ver" ]] && info "WinMacKey 갱신 확인: 설치 v${wm_installed_ver} → 릴리스 v${wm_latest_ver:-?}"
+    WD="$(mktemp -d -t winmackey.XXXXXX)"; DMG=""
+    if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+      (cd "$WD" && gh release download --repo "$WM_REPO" --pattern '*.dmg' --clobber >/dev/null 2>&1) \
+        && DMG="$(ls "$WD"/*.dmg 2>/dev/null | head -1)"
+    fi
+    if [[ -z "$DMG" ]]; then
+      URL="$(printf '%s' "$WM_META" | grep -oE '"browser_download_url":[[:space:]]*"[^"]+\.dmg"' | head -1 | cut -d'"' -f4)"
+      [[ -n "$URL" ]] && curl -fsSL -o "$WD/WinMacKey.dmg" "$URL" && DMG="$WD/WinMacKey.dmg"
+    fi
+    if [[ -n "$DMG" && -f "$DMG" ]]; then
+      wm_install_from_dmg "$DMG"
+    elif [[ -d "$WM_APP" ]]; then
+      warn "최신 릴리스 다운로드 실패 — 기존 v${wm_installed_ver} 유지. 릴리스 페이지 확인"
+      open "https://github.com/${WM_REPO}/releases/latest" 2>/dev/null || true
+    else
+      warn "WinMacKey 다운로드 실패 — 릴리스 페이지를 엽니다"
+      open "https://github.com/${WM_REPO}/releases/latest" 2>/dev/null || true
+    fi
+    rm -rf "$WD" 2>/dev/null
   fi
 fi
 
 # ────────────────────────────────────────────────────────
-# [6/12] 작업 폴더
+# [7/14] 작업 폴더
 # ────────────────────────────────────────────────────────
 step "팀 표준 작업 폴더" "없음"
 mkdir -p "$HOME/worksapces/api-server" \
@@ -256,7 +309,7 @@ mkdir -p "$HOME/worksapces/api-server" \
 ok "~/worksapces + ~/.claude/workspace 준비됨"
 
 # ────────────────────────────────────────────────────────
-# [7/12] defaults write
+# [8/14] defaults write
 # ────────────────────────────────────────────────────────
 step "macOS 기본값 (Finder/Dock/스크롤/다크모드/캡처)" "없음"
 if [[ "${SKIP_DEFAULTS:-0}" == "1" ]]; then
@@ -298,7 +351,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [8/12] 절전 정책
+# [9/14] 절전 정책
 # ────────────────────────────────────────────────────────
 step "절전 정책 (AC 어댑터)" "pmset, sudo"
 if command -v pmset >/dev/null 2>&1; then
@@ -308,7 +361,7 @@ if command -v pmset >/dev/null 2>&1; then
 fi
 
 # ────────────────────────────────────────────────────────
-# [9/12] Git 기본 설정
+# [10/14] Git 기본 설정
 # ────────────────────────────────────────────────────────
 step "Git 설정" "git"
 if ! require_cmd git "brew install git"; then
@@ -331,7 +384,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [10/12] Python 3.11 검증
+# [11/14] Python 3.11 검증
 # ────────────────────────────────────────────────────────
 step "Python 3.11 검증" "brew, python@3.11"
 if require_cmd python3.11 "brew install python@3.11"; then
@@ -343,7 +396,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [11/12] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
+# [12/14] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
 # ────────────────────────────────────────────────────────
 step "AI CLI 설치 (Claude Code / Codex / Gemini)" "node, npm"
 if [[ "${SKIP_AI:-0}" == "1" ]]; then
@@ -369,7 +422,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [12/13] MLX 로컬 LLM 환경 (Apple Silicon) + Ollama
+# [13/14] MLX 로컬 LLM 환경 (Apple Silicon) + Ollama
 # ────────────────────────────────────────────────────────
 step "로컬 LLM (MLX venv + Ollama)" "python3.11, uv (MLX는 Apple Silicon 전용)"
 if [[ "${SKIP_MLX:-0}" == "1" ]]; then
@@ -410,7 +463,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [13/13] 수동 단계 안내
+# [14/14] 수동 단계 안내
 # ────────────────────────────────────────────────────────
 step "수동 단계 안내 (자동화 불가)" "사용자"
 cat <<EOF
@@ -456,4 +509,11 @@ printf "  ${C_BOLD}bash %s/verify.sh${C_RESET}\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}bash %s/prompts/permissions-open.sh${C_RESET}\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}open %s/apps-usage.md${C_RESET}             (각 앱 첫걸음)\n" "$SCRIPT_DIR"
 printf "  ${C_BOLD}open %s/windows-to-mac-survival.md${C_RESET}  (윈도우 사용자 생존 가이드)\n" "$SCRIPT_DIR"
+
+printf "\n${C_BOLD}━━ 여기서부터는 Claude Code 가 도와줍니다 ━━${C_RESET}\n"
+printf "  1) ${C_BOLD}Ghostty${C_RESET} 를 엽니다 (⌘Space → ghostty)\n"
+printf "  2) ${C_BOLD}claude${C_RESET} 를 실행해 로그인합니다\n"
+printf "  3) ${C_BOLD}/macbook-teammate-softlanding${C_RESET} 스킬을 호출하면, 권한 ON·로그인 등\n"
+printf "     남은 수동 20%%를 Claude Code 가 설명하며 함께 진행합니다.\n"
+printf "  ${C_X}→ 이제 명령을 외울 필요 없이, 하고 싶은 걸 claude 에게 말하면 됩니다.${C_RESET}\n"
 exit 0

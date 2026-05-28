@@ -14,24 +14,28 @@
 
 set -eu
 
-if [[ -t 1 ]]; then G='\033[32m'; B='\033[1m'; D='\033[0m'; else G=''; B=''; D=''; fi
+if [[ -t 1 ]]; then G=$'\033[32m'; B=$'\033[1m'; D=$'\033[0m'; else G=''; B=''; D=''; fi
 
-SRC_SKILL_DIR="$HOME/.hermes/skills/software-development/macbook-teammate-softlanding"
-SRC_ASSETS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 이 스크립트는 softlanding/ 안에 있고, SKILL.md/references 는 그 부모(저장소 루트)에 있다.
+SRC_ASSETS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # .../softlanding
+REPO_ROOT="$(cd "$SRC_ASSETS_DIR/.." && pwd)"                    # 저장소 루트
 
-if [[ ! -f "$SRC_SKILL_DIR/SKILL.md" ]]; then
-  echo "SKILL.md 가 $SRC_SKILL_DIR 에 없습니다."
-  echo "이 install-skill.sh 는 hermes 스킬이 그 위치에 있을 때만 동작합니다."
+if [[ ! -f "$REPO_ROOT/SKILL.md" ]]; then
+  echo "SKILL.md 를 $REPO_ROOT 에서 찾지 못했습니다."
+  echo "이 스크립트는 저장소를 clone 한 뒤 softlanding/install-skill.sh 로 실행해야 합니다."
   exit 1
 fi
 
 install_to() {
   local target_root="$1" name="$2"
   local target="$target_root/macbook-teammate-softlanding"
+  rm -rf "$target"
   mkdir -p "$target"
-  cp -R "$SRC_SKILL_DIR/." "$target/"
+  # 스킬 정의 + 참고 문서를 저장소 루트에서 복사
+  cp "$REPO_ROOT/SKILL.md" "$target/"
+  [[ -f "$REPO_ROOT/README.md" ]] && cp "$REPO_ROOT/README.md" "$target/"
+  [[ -d "$REPO_ROOT/references" ]] && cp -R "$REPO_ROOT/references" "$target/"
   # softlanding 자산(스크립트, 매뉴얼)도 같이 둠 — 스킬이 직접 참조 가능
-  rm -rf "$target/softlanding"
   cp -R "$SRC_ASSETS_DIR" "$target/softlanding"
   printf "${G}✔${D} %s → %s\n" "$name" "$target"
 }

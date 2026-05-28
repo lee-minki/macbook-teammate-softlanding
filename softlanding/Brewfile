@@ -1,6 +1,6 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing Brewfile (v1.3.0)                         ║
-# ║  대상: Windows에서 넘어온 사용자가 "민기 표준" 베이스라인 1회 설치     ║
+# ║  MacBook Soft-Landing Brewfile (v1.4.0)                         ║
+# ║  대상: Windows에서 넘어온 사용자가 팀 표준 베이스라인 1회 설치          ║
 # ║  사용: brew bundle --file=Brewfile  (bootstrap.sh 가 자동 호출)       ║
 # ╚══════════════════════════════════════════════════════════════════════╝
 
@@ -25,7 +25,7 @@ cask "alt-tab"           # ⌘+Tab 을 윈도우식 "창 단위" 로 (윈도우 
 cask "maccy"             # 클립보드 매니저 — 윈도우의 Win+V 대체
 cask "the-unarchiver"    # rar/7z/zip 등 모든 압축 해제
 cask "mos"               # 외부 마우스(특히 로지텍) 부드러운 스크롤 + 방향 반전 토글
-cask "logi-options-plus" # 로지텍 마우스/키보드 공식 — 버튼 매핑/제스처
+cask "logi-options+"     # 로지텍 마우스/키보드 공식 — 버튼 매핑/제스처
 cask "rectangle"         # 창 분할 (윈도우 Win+화살표 대체)
 
 # === ④ 키보드 편의 (윈도우식 키감 + Hyperkey/리더키) ===
@@ -43,7 +43,7 @@ cask "telegram-desktop"  # 팀 정책상
 cask "tailscale-app"     # 사내망 VPN GUI 앱 — 초심자 로그인/메뉴바 흐름 기준
 
 # === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
-cask "iterm2"            # macOS 기본 Terminal 보다 훨씬 편함 (분할, 검색, 프로파일)
+cask "ghostty"           # 터미널 — GPU 가속, 빠르고 단순. 초심자 첫 "명령 치는 창"
 cask "visual-studio-code"  # 표준 에디터
 cask "cursor"            # AI-native 에디터 (Claude/GPT 통합)
 

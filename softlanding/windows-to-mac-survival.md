@@ -129,7 +129,7 @@ bootstrap 이 다음을 적용 (AC 어댑터 기준):
 
 ### CapsLock → Hyper Key (⌘⌥⌃⇧)
 - CapsLock 을 거의 안 쓰니까 4개 modifier 의 합으로 매핑
-- 예: `Hyper + R` → Raycast, `Hyper + T` → iTerm2, `Hyper + S` → Slack
+- 예: `Hyper + R` → Raycast, `Hyper + T` → Ghostty, `Hyper + S` → Slack
 - 단축키 충돌 0 (어떤 앱도 ⌘⌥⌃⇧ 조합은 안 씀)
 
 ### 리더키 (Leader Key) 패턴

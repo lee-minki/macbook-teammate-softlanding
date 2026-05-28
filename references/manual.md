@@ -53,17 +53,25 @@
 11. AI 도구
 12. 최종 검증과 인계
 
-## 0. Phase 0 — 딸깍 자동 설치 (v1.4.0)
+## 0. Phase 0 — 딸깍 자동 설치 (v1.5.0)
+
+전후관계: **터미널(Ghostty) → Claude Code → 이 스킬이 나머지 주도.** 진짜 초심자는 옵션 A 로 Claude Code 까지만 띄운 뒤, 나머지는 Claude Code 에서 이 스킬을 호출해 대화식으로 진행하는 것을 권장한다.
 
 ```bash
 cd ~/Downloads/softlanding
+
+# 옵션 A — 최소: 터미널(Ghostty) + Claude Code 까지만
+bash bootstrap-min.sh
+# → Ghostty 열고 `claude` 실행 → /macbook-teammate-softlanding 호출 → 나머지는 AI 주도
+
+# 옵션 B — 풀: 0~3단계 전부 한 방에
 GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" bash bootstrap.sh
 bash verify.sh
 bash prompts/permissions-open.sh
 ```
 
 자동 처리:
-- Xcode CLT → Homebrew → 27개 앱/CLI(brew bundle) → mas 2개(Amphetamine, Hidden Bar) → WinMacKey DMG
+- Xcode CLT → Homebrew → 30개 앱/CLI(brew bundle) → mas 2개(Amphetamine, Hidden Bar) → WinMacKey DMG
 - 폴더 구조, Finder/Dock/스크롤/다크모드/캡처 defaults
 - Python 3.11 + uv + pipx
 - Git 설정 (환경변수)
@@ -229,7 +237,7 @@ tailscale status
 - **Logi Options+** — 로지텍 마우스/키보드 공식 (버튼 매핑, 제스처)
 
 ### 키보드 편의
-- **WinMacKey** — Windows 키감 (GitHub Release DMG, 자동 fetch)
+- **WinMacKey** — Windows 키감 (GitHub Release DMG 자동 fetch). 활발히 업데이트되므로 재실행 시 설치 버전과 최신 릴리스를 비교해 **자동 갱신** (`WINMACKEY_REPO` 필요)
 - **Karabiner-Elements** — Hyper Key/Leader Key 고급 매핑 (선택)
 
 ### 메뉴바
@@ -238,7 +246,7 @@ tailscale status
 - **Amphetamine** — 절전 방지 (App Store, 발표/회의/긴 다운로드)
 
 ### 에디터/터미널
-- **iTerm2** — 표준 터미널 (분할, 검색, 프로파일)
+- **Ghostty** — 표준 터미널. GPU 가속, 빠르고 단순. 초심자가 처음 "명령을 치는 창". `~/.config/ghostty/config` 에 기본값 자동 작성(비파괴)
 - **VS Code** — 표준 에디터. `code` 명령 PATH 등록 필요 (`⌘⇧P → Install code command`)
 - **Cursor** — AI-native 에디터 (Claude/GPT 통합)
 
@@ -256,7 +264,7 @@ open -a "Rectangle" || true
 open -a "Mos" || true
 open -a "Stats" || true
 open -a "Amphetamine" || true
-open -a "iTerm" || true
+open -a "Ghostty" || true
 open -a "Visual Studio Code" || true
 open -a "Cursor" || true
 open -a "Raycast" || true
