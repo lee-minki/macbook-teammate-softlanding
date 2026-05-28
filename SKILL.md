@@ -1,6 +1,6 @@
 ---
 name: macbook-teammate-softlanding
-description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (31 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
+description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (32 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
 version: 1.5.0
 author: Hermes Agent
 license: MIT
@@ -160,7 +160,7 @@ references/manual.md
 softlanding/                       # 자동화 자산 (이 스킬이 실행 기준)
 ├── bootstrap-min.sh               # Stage 0: Ghostty + Claude Code 까지만 (전후관계 1·2단계)
 ├── bootstrap.sh                   # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
-├── Brewfile                       # 31개 (brew 13 + cask 18)
+├── Brewfile                       # 32개 (brew 13 + cask 19)
 ├── ghostty.config                 # Ghostty 초심자 기본 config (비파괴 복사)
 ├── verify.sh                      # OK/WARN/SKIP/FAIL 체크리스트
 ├── apps-usage.md                  # 각 앱 첫 5분
@@ -252,14 +252,15 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 "딸깍"의 현실적 경계를 먼저 명시한다. 무리하게 자동화를 시도하지 않는다.
 
 자동화 **가능** — `softlanding/bootstrap.sh` 가 의존성 게이트 + 자가복구로 처리:
-- Xcode CLT → Homebrew → `brew bundle` (31 패키지)
+- Xcode CLT → Homebrew → `brew bundle` (32 패키지)
 - 핵심 CLI 6종(git/node/npm/python3.11/mas/gh) 즉시 재검증 + 빠진 것 자동 재설치. Tailscale은 초심자 로그인 흐름을 위해 `tailscale-app` cask GUI 앱을 기본 설치
 - 윈도우 갭 메우기 cask: AltTab, Maccy, Mos, Rectangle, The Unarchiver, Logi Options+, Karabiner-Elements, Stats
 - 터미널: Ghostty (GPU 가속, 초심자 첫 "명령 치는 창") + `~/.config/ghostty/config` 기본값 비파괴 작성(기존 있으면 .bak 백업 후 보존)
-- 에디터: VS Code, Cursor
-- 클라우드 AI: Claude Desktop + npm globals (Claude Code/Codex/Gemini)
+- 에디터: VS Code (+ **Codex 확장 `openai.chatgpt`** 를 `code --install-extension` 으로 자동 설치), Cursor
+- 생산성/메신저/원격: Raycast, Google Chrome, Telegram, Discord, Tailscale, **Omnissa Horizon Client(VDI, 구 VMware Horizon)**
+- 클라우드 AI: Claude Desktop + npm globals (Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex)
 - 로컬 LLM: Ollama(brew), LM Studio(cask), MLX(`~/worksapces/mlx-lab` venv, Apple Silicon 전용 — `uv pip install mlx mlx-lm`)
-- App Store(mas): Amphetamine(절전 방지), Hidden Bar(메뉴바 정리)
+- App Store(mas): Amphetamine(절전 방지), Hidden Bar(메뉴바 정리), RunCat(메뉴바 CPU 인디케이터)
 - WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입한다. **WinMacKey 는 활발히 업데이트되므로, 이미 설치돼 있어도 설치 버전(`CFBundleShortVersionString`)과 최신 릴리스 tag 를 비교해 다르면 자동 갱신**한다(실행 중이면 종료 후 교체). 미지정 시 자동 설치를 건너뛰고 안내만 한다. Draft 릴리스는 자동으로 건너뛴다.
 - `~/worksapces/{api-server,frontend-web,infra-tools,data-pipeline,shared-lib}` + `~/.claude/workspace`
 - `defaults write` 일괄 — Finder(경로/상태 막대, 컬럼, 확장자), Dock(자동 숨김), 키 반복(가장 빠름), 자연 스크롤 OFF, 다크모드 ON, 스크린샷(PNG/그림자 제거/다운로드 폴더), .DS_Store 네트워크/USB 비생성, 24시간제
@@ -609,6 +610,9 @@ npm install -g oh-my-opencode
 # oh-my-codex — Codex CLI 멀티에이전트 오케스트레이션 (bin: omx)
 npm install -g oh-my-codex
 which omx && omx --version
+
+# VS Code Codex 확장 (에디터 안 Codex 에이전트)
+code --install-extension openai.chatgpt --force
 
 # Playwright (브라우저 자동화/테스트, 글로벌 설치 없이 npx)
 npx playwright --version

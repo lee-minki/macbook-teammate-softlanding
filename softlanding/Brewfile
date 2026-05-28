@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing Brewfile (v1.4.0)                         ║
+# ║  MacBook Soft-Landing Brewfile (v1.5.1)                         ║
 # ║  대상: Windows에서 넘어온 사용자가 팀 표준 베이스라인 1회 설치          ║
 # ║  사용: brew bundle --file=Brewfile  (bootstrap.sh 가 자동 호출)       ║
 # ╚══════════════════════════════════════════════════════════════════════╝
@@ -43,6 +43,7 @@ cask "google-chrome"     # 표준 브라우저
 cask "telegram-desktop"  # 팀 정책상
 cask "discord"           # 팀 커뮤니티/음성 채널
 cask "tailscale-app"     # 사내망 VPN GUI 앱 — 초심자 로그인/메뉴바 흐름 기준
+cask "omnissa-horizon-client"  # VDI 클라이언트 (구 VMware Horizon Client) — 가상 데스크톱 접속
 
 # === ⑦ 바이브 코딩 / 에디터 / 터미널 ===
 cask "ghostty"           # 터미널 — GPU 가속, 빠르고 단순. 초심자 첫 "명령 치는 창"

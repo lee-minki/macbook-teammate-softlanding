@@ -71,7 +71,7 @@ bash prompts/permissions-open.sh
 ```
 
 자동 처리:
-- Xcode CLT → Homebrew → 31개 앱/CLI(brew bundle) → mas 3개(Amphetamine, Hidden Bar, RunCat) → WinMacKey DMG
+- Xcode CLT → Homebrew → 32개 앱/CLI(brew bundle) → mas 3개(Amphetamine, Hidden Bar, RunCat) → WinMacKey DMG
 - 폴더 구조, Finder/Dock/스크롤/다크모드/캡처 defaults
 - Python 3.11 + uv + pipx
 - Git 설정 (환경변수)
@@ -248,14 +248,15 @@ tailscale status
 
 ### 에디터/터미널
 - **Ghostty** — 표준 터미널. GPU 가속, 빠르고 단순. 초심자가 처음 "명령을 치는 창". `~/.config/ghostty/config` 에 기본값 자동 작성(비파괴)
-- **VS Code** — 표준 에디터. `code` 명령 PATH 등록 필요 (`⌘⇧P → Install code command`)
+- **VS Code** — 표준 에디터. `code` 명령 PATH 등록 (`⌘⇧P → Install code command`). bootstrap 이 **Codex 확장(`openai.chatgpt`)** 자동 설치
 - **Cursor** — AI-native 에디터 (Claude/GPT 통합)
 
-### Spotlight / 브라우저 / 메신저
+### Spotlight / 브라우저 / 메신저 / 원격
 - **Raycast** — Spotlight 강화. 시스템 Spotlight 단축키 해제 후 `⌘Space` 잡기
 - **Google Chrome** — 업무/개인 프로필 분리 권장
 - **Telegram Desktop** — 팀 정책상 필요할 때만
 - **Discord** — 팀 커뮤니티/음성 채널
+- **Omnissa Horizon Client** — VDI 접속(구 VMware Horizon). 사내 가상 데스크톱 쓰면 서버 주소 추가 후 로그인
 
 검증:
 
@@ -333,6 +334,7 @@ git config --global init.defaultBranch main
 - OpenCode (`opencode`, opencode-ai)
 - oh-my-opencode (OpenCode 멀티에이전트 하네스)
 - oh-my-codex (`omx`, Codex 멀티에이전트 오케스트레이션)
+- VS Code **Codex 확장** (`openai.chatgpt`, `code --install-extension`)
 - Playwright (`npx playwright`)
 
 검증 예시:
