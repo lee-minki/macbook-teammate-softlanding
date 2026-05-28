@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.5.0)            ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.5.1)            ║
 # ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
@@ -75,7 +75,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.5.0)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.5.1)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -155,6 +155,7 @@ cask "mos"; cask "logi-options+"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
 cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "discord"; cask "tailscale-app"
+cask "omnissa-horizon-client"
 cask "ghostty"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
 brew "ollama"; cask "lm-studio"
@@ -398,7 +399,7 @@ fi
 # ────────────────────────────────────────────────────────
 # [12/14] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
 # ────────────────────────────────────────────────────────
-step "AI CLI 설치 (Claude Code / Codex / Gemini / Hermes / OpenCode / oh-my-*)" "node, npm"
+step "AI CLI 설치 (Claude Code/Codex/Gemini/Hermes/OpenCode/oh-my-* + VS Code Codex 확장)" "node, npm"
 if [[ "${SKIP_AI:-0}" == "1" ]]; then
   skip "SKIP_AI=1"
 elif ! require_cmd node "brew install node"; then
@@ -426,6 +427,19 @@ else
       warn "  $p 설치 실패 — 네트워크/권한 확인"
     fi
   done
+
+  # ── VS Code Codex 확장 (openai.chatgpt) — code CLI 없으면 앱 번들 경로로 ──
+  VSCODE_BIN=""
+  command -v code >/dev/null 2>&1 && VSCODE_BIN="code"
+  [[ -z "$VSCODE_BIN" && -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]] \
+    && VSCODE_BIN="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+  if [[ -n "$VSCODE_BIN" ]]; then
+    "$VSCODE_BIN" --install-extension openai.chatgpt --force >/dev/null 2>&1 \
+      && ok "  VS Code Codex 확장 (openai.chatgpt)" \
+      || warn "  VS Code Codex 확장 설치 실패 — 수동: code --install-extension openai.chatgpt"
+  else
+    warn "  VS Code 미발견 — Codex 확장 생략"
+  fi
 fi
 
 # ────────────────────────────────────────────────────────

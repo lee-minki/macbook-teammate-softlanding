@@ -86,6 +86,7 @@ apps=(
   "Claude"
   "WinMacKey"
   "Tailscale"
+  "Omnissa Horizon Client"
   "LM Studio"
 )
 for app in "${apps[@]}"; do
@@ -145,6 +146,35 @@ for c in claude codex gemini hermes opencode oh-my-opencode omx; do
     chk_warn "$c 미설치 또는 PATH 미반영"
   fi
 done
+# VS Code Codex 확장
+VSCODE_BIN="$(command -v code 2>/dev/null || echo "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code")"
+if [[ -x "$VSCODE_BIN" ]] || command -v code >/dev/null 2>&1; then
+  if "$VSCODE_BIN" --list-extensions 2>/dev/null | grep -qi '^openai.chatgpt$'; then
+    chk_ok "VS Code Codex 확장 (openai.chatgpt)"
+  else
+    chk_warn "VS Code Codex 확장 없음 — code --install-extension openai.chatgpt"
+  fi
+fi
+
+# ── 환경변수 / PATH (새 터미널 기준) ──
+section "환경변수 / PATH (새 로그인 셸 기준)"
+if grep -q 'brew shellenv' "$HOME/.zprofile" 2>/dev/null; then
+  chk_ok "~/.zprofile 에 brew shellenv 등록 — 새 터미널에서 PATH 자동 반영"
+elif [[ "$(uname -m)" == "arm64" ]]; then
+  chk_warn "~/.zprofile 에 brew shellenv 없음 — 새 터미널에서 brew/node 못 찾을 수 있음 (bootstrap 재실행)"
+else
+  chk_ok "Intel — /usr/local/bin 기본 PATH (shellenv 불필요)"
+fi
+# 현재 세션이 아니라 'fresh login shell'(= 팀원이 새 터미널 열었을 때)에서 실제로 잡히는지 검증
+if command -v zsh >/dev/null 2>&1; then
+  for c in brew node npm claude; do
+    if zsh -l -c "command -v $c" >/dev/null 2>&1; then
+      chk_ok "새 로그인 셸에서 $c 발견"
+    else
+      chk_warn "새 로그인 셸에서 $c 못 찾음 — 현재 세션엔 있어도 새 터미널에선 PATH 미반영 가능"
+    fi
+  done
+fi
 
 # ── 요약 ──
 section "요약"

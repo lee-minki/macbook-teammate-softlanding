@@ -41,7 +41,7 @@ references/
 softlanding/                      # 실행 자산 (딸깍 설치)
 ├── bootstrap-min.sh              # Stage 0: Ghostty + Claude Code 까지만
 ├── bootstrap.sh                  # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
-├── Brewfile                      # brew bundle 정의 (31개)
+├── Brewfile                      # brew bundle 정의 (32개)
 ├── ghostty.config                # Ghostty 초심자 기본 config (비파괴 복사)
 ├── verify.sh                     # 설치 검증 (OK/WARN/SKIP/FAIL)
 ├── apps-usage.md                 # 각 앱 첫 5분

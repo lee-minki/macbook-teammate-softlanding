@@ -22,6 +22,7 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
   - `⌘⇧P` → "Shell Command: Install 'code' command in PATH" → 터미널에서 `code .` 사용 가능
   - 한글 폰트 깨지면 Settings → Font Family → `"D2Coding", "JetBrains Mono", monospace`
 - 추천 확장: Python, ESLint, Prettier, GitLens, Korean Language Pack
+- **Codex 확장** (`openai.chatgpt`): bootstrap 이 자동 설치 (VS Code 안에서 Codex 에이전트). 수동은 `code --install-extension openai.chatgpt`
 - 단축키: `⌘P` 파일 열기, `⌘⇧F` 전체 검색, `⌃\`` 터미널 열기
 
 ### Cursor — AI 에디터 (`⌘Space → Cursor`)
@@ -187,6 +188,12 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 - 메뉴바 아이콘 → Log in → 회사 계정 OAuth
 - tailnet 관리자가 device 승인하면 즉시 사내 서버 접근 가능
 - 터미널: `tailscale status`, `tailscale ip`, `tailscale ping <hostname>`
+
+### Omnissa Horizon Client — VDI 접속 (구 VMware Horizon)
+- **왜?** 가상 데스크톱(VDI)으로 업무 환경에 접속. 사내 정책상 VDI 쓰는 경우 필수
+- 첫 실행: 서버 주소(회사에서 받은 Connection Server) 추가 → 계정 로그인
+- 권한: 화면 공유/접근성 요청 시 시스템 설정에서 허용
+- 단축키 충돌: VDI 안의 Windows 와 맥 단축키가 겹칠 수 있음 → WinMacKey 의 VDI 모드 참고
 
 ### Raycast — Spotlight 강화
 - 단축키 `⌘Space` (Spotlight 대신 잡으면 충돌 — 시스템 설정에서 Spotlight 단축키 해제 권장)
