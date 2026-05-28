@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.3.1)            ║
-# ║  대상: Windows 에서 넘어온 사용자, "민기 표준" 베이스라인 1회 자동    ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.3.2)            ║
+# ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
 # ║  ① 의존성 체인 보장 — 이전 단계가 깨지면 자가 복구 시도, 그래도       ║
@@ -75,7 +75,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.3.1)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.3.2)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -85,11 +85,11 @@ log "사용자: $(whoami)   컴퓨터: $(scutil --get ComputerName 2>/dev/null |
 log "macOS:  $(sw_vers -productVersion) ($ARCH)"
 log ""
 log "흐름: Xcode CLT → Homebrew → brew bundle → mas → WinMacKey →"
-log "      폴더 → defaults → 절전 → Git → Python 검증 → AI CLI → 안내"
+log "      폴더 → defaults → 절전 → Git → Python 검증 → AI CLI → 로컬 LLM → 안내"
 log "각 단계는 이전 단계가 실패하면 자동으로 자가 복구 후 재시도하거나 skip 됩니다."
 
 # ────────────────────────────────────────────────────────
-# [1/12] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
+# [1/13] Xcode CLT — Homebrew 의 일부 빌드/cask 가 의존
 # ────────────────────────────────────────────────────────
 step "Xcode Command Line Tools" "최상위 의존성"
 if xcode-select -p >/dev/null 2>&1; then
@@ -107,7 +107,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [2/12] Homebrew — 거의 모든 후속 단계가 의존
+# [2/13] Homebrew — 거의 모든 후속 단계가 의존
 # ────────────────────────────────────────────────────────
 step "Homebrew" "Xcode CLT"
 if command -v brew >/dev/null 2>&1; then
@@ -135,7 +135,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [3/12] brew bundle — formulae + casks 일괄
+# [3/13] brew bundle — formulae + casks 일괄
 # ────────────────────────────────────────────────────────
 step "brew bundle (CLI + 앱 일괄)" "Homebrew"
 if [[ "$BREW_OK" != "1" ]]; then
@@ -151,7 +151,7 @@ brew "git"; brew "gh"; brew "node"
 brew "python@3.11"; brew "uv"; brew "pipx"
 brew "jq"; brew "ripgrep"; brew "fd"; brew "tree"; brew "wget"
 cask "alt-tab"; cask "maccy"; cask "the-unarchiver"
-cask "mos"; cask "logi-options-plus"; cask "rectangle"
+cask "mos"; cask "logi-options+"; cask "rectangle"
 cask "karabiner-elements"
 cask "stats"
 cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "tailscale-app"
@@ -185,7 +185,7 @@ BREWEOF
 fi
 
 # ────────────────────────────────────────────────────────
-# [4/12] App Store 앱 (mas)
+# [4/13] App Store 앱 (mas)
 # ────────────────────────────────────────────────────────
 step "App Store 앱 (mas)" "mas, Apple ID 로그인"
 if [[ "${SKIP_MAS:-0}" == "1" ]]; then
@@ -207,7 +207,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [5/12] WinMacKey (GitHub Release DMG)
+# [5/13] WinMacKey (GitHub Release DMG)
 # ────────────────────────────────────────────────────────
 step "WinMacKey (GitHub Release DMG)" "curl 또는 gh, WINMACKEY_REPO 환경변수"
 # WinMacKey 저장소는 환경변수로 주입한다 (예: WINMACKEY_REPO="owner/repo").
@@ -244,7 +244,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [6/12] 작업 폴더
+# [6/13] 작업 폴더
 # ────────────────────────────────────────────────────────
 step "팀 표준 작업 폴더" "없음"
 mkdir -p "$HOME/worksapces/api-server" \
@@ -256,7 +256,7 @@ mkdir -p "$HOME/worksapces/api-server" \
 ok "~/worksapces + ~/.claude/workspace 준비됨"
 
 # ────────────────────────────────────────────────────────
-# [7/12] defaults write
+# [7/13] defaults write
 # ────────────────────────────────────────────────────────
 step "macOS 기본값 (Finder/Dock/스크롤/다크모드/캡처)" "없음"
 if [[ "${SKIP_DEFAULTS:-0}" == "1" ]]; then
@@ -298,7 +298,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [8/12] 절전 정책
+# [8/13] 절전 정책
 # ────────────────────────────────────────────────────────
 step "절전 정책 (AC 어댑터)" "pmset, sudo"
 if command -v pmset >/dev/null 2>&1; then
@@ -308,7 +308,7 @@ if command -v pmset >/dev/null 2>&1; then
 fi
 
 # ────────────────────────────────────────────────────────
-# [9/12] Git 기본 설정
+# [9/13] Git 기본 설정
 # ────────────────────────────────────────────────────────
 step "Git 설정" "git"
 if ! require_cmd git "brew install git"; then
@@ -331,7 +331,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [10/12] Python 3.11 검증
+# [10/13] Python 3.11 검증
 # ────────────────────────────────────────────────────────
 step "Python 3.11 검증" "brew, python@3.11"
 if require_cmd python3.11 "brew install python@3.11"; then
@@ -343,7 +343,7 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [11/12] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
+# [11/13] AI CLI (npm globals) — ★ node/npm 의존 명시 검증 ★
 # ────────────────────────────────────────────────────────
 step "AI CLI 설치 (Claude Code / Codex / Gemini)" "node, npm"
 if [[ "${SKIP_AI:-0}" == "1" ]]; then

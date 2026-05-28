@@ -175,7 +175,7 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 
 ### Tailscale — 사내망 VPN
 - 메뉴바 아이콘 → Log in → 회사 계정 OAuth
-- 관리자(민기)가 device 승인하면 즉시 사내 서버 접근 가능
+- tailnet 관리자가 device 승인하면 즉시 사내 서버 접근 가능
 - 터미널: `tailscale status`, `tailscale ip`, `tailscale ping <hostname>`
 
 ### Raycast — Spotlight 강화

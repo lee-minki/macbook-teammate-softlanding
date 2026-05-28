@@ -1,6 +1,6 @@
 ---
 name: macbook-teammate-softlanding
-description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (27 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/iTerm2/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
+description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (30 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/iTerm2/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
 version: 1.4.0
 author: Hermes Agent
 license: MIT
@@ -142,8 +142,8 @@ references/manual.md
 
 ```text
 softlanding/                       # 자동화 자산 (이 스킬이 실행 기준)
-├── bootstrap.sh                   # 12단계, 의존성 게이트 + 자가복구
-├── Brewfile                       # 27개 (CLI 12 + cask 14 + mas 1)
+├── bootstrap.sh                   # 13단계, 의존성 게이트 + 자가복구
+├── Brewfile                       # 30개 (brew 13 + cask 17)
 ├── verify.sh                      # OK/WARN/SKIP/FAIL 체크리스트
 ├── apps-usage.md                  # 각 앱 첫 5분
 ├── windows-to-mac-survival.md     # 윈도우 사용자 12가지 함정
@@ -234,7 +234,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 "딸깍"의 현실적 경계를 먼저 명시한다. 무리하게 자동화를 시도하지 않는다.
 
 자동화 **가능** — `softlanding/bootstrap.sh` 가 의존성 게이트 + 자가복구로 처리:
-- Xcode CLT → Homebrew → `brew bundle` (27 패키지)
+- Xcode CLT → Homebrew → `brew bundle` (30 패키지)
 - 핵심 CLI 6종(git/node/npm/python3.11/mas/gh) 즉시 재검증 + 빠진 것 자동 재설치. Tailscale은 초심자 로그인 흐름을 위해 `tailscale-app` cask GUI 앱을 기본 설치
 - 윈도우 갭 메우기 cask: AltTab, Maccy, Mos, Rectangle, The Unarchiver, Logi Options+, Karabiner-Elements, Stats
 - 에디터/터미널: iTerm2, VS Code, Cursor

@@ -63,7 +63,7 @@ bash prompts/permissions-open.sh
 ```
 
 자동 처리:
-- Xcode CLT → Homebrew → 27개 앱/CLI(brew bundle) → mas 2개(Amphetamine, Hidden Bar) → WinMacKey DMG
+- Xcode CLT → Homebrew → 30개 앱/CLI(brew bundle) → mas 2개(Amphetamine, Hidden Bar) → WinMacKey DMG
 - 폴더 구조, Finder/Dock/스크롤/다크모드/캡처 defaults
 - Python 3.11 + uv + pipx
 - Git 설정 (환경변수)

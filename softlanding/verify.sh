@@ -69,7 +69,7 @@ apps=(
   "AltTab"
   "Maccy"
   "Mos"
-  "Logi Options+"
+  "logioptionsplus"
   "Rectangle"
   "Karabiner-Elements"
   "Stats"
