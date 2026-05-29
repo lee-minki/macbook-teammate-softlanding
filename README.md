@@ -27,7 +27,7 @@ cd ~/Downloads && git clone https://github.com/lee-minki/macbook-teammate-softla
 
 ## 무엇을 하나
 
-- **자동 80%**: Xcode CLT → Homebrew → `brew bundle`(에디터/터미널/윈도우 갭 메우기 앱) → Python 3.11 + uv/pipx → Git → AI CLI(Claude Code/Codex/Gemini) → 로컬 LLM(Ollama/LM Studio/MLX). 의존성 게이트 + 자가복구로 "node 없이 Claude Code 가 깔리는" 사고를 막는다.
+- **자동 80%**: Xcode CLT → Homebrew → `brew bundle`(32개: 터미널 Ghostty·에디터·윈도우 갭 메우기 앱·Discord·VDI 등) → Python 3.11 + uv/pipx → Git → AI CLI(Claude Code/Codex/Gemini/Hermes/OpenCode/oh-my-opencode/oh-my-codex + VS Code Codex 확장) → 로컬 LLM(Ollama/LM Studio/MLX). 의존성 게이트 + 자가복구로 "node 없이 Claude Code 가 깔리는" 사고를 막는다.
 - **수동 20%**: TCC 권한, Tailscale OAuth, iCloud 동기화 해제, 각 AI 계정 로그인 — macOS 보안 모델상 사용자가 직접.
 - **AI 스택**: 클라우드 + 로컬(MLX/Ollama/LM Studio) + 오케스트레이션(로컬↔클라우드 라우팅).
 

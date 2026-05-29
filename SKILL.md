@@ -1,6 +1,6 @@
 ---
 name: macbook-teammate-softlanding
-description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (32 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar, defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
+description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (32 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar/RunCat, VS Code Codex extension (openai.chatgpt), Omnissa Horizon (VDI), defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
 version: 1.5.0
 author: Hermes Agent
 license: MIT
@@ -126,7 +126,8 @@ workspace folder, /Users/<account>/worksapces, .claude/workspace, hidden files, 
 Tailscale install, tailscale status, remote access basics,
 Raycast, RunCat, Chrome, Telegram optional, productivity apps,
 Homebrew latest, Node.js latest stable, npm current bundled, Git latest, Python 3.11 baseline, uv/pipx optional,
-Claude Desktop, Claude Code CLI, Codex CLI, Hermes Agent CLI, Playwright CLI,
+Claude Desktop, Claude Code CLI, Codex CLI, Gemini CLI, Hermes Agent, OpenCode, oh-my-opencode, oh-my-codex (omx), VS Code Codex extension, Playwright CLI,
+Discord, RunCat, Magnet (paid window manager), Omnissa Horizon VDI client,
 beginner-friendly Korean guide, screenshots, copy-paste commands, verification-first,
 no personal vault, no Bitwarden setup, no secret copying, no private account copying,
 non-destructive setup, backup before dotfile edits, team handoff, rollback notes
@@ -506,11 +507,12 @@ tailscale status
 추천 앱:
 
 - Raycast: Spotlight 대체, 앱 실행/검색
-- RunCat: 메뉴바 시스템 모니터
+- Stats + RunCat: 메뉴바 시스템 모니터(상세) + CPU 인디케이터(고양이)
 - Chrome: 웹 업무 기본 브라우저
-- Telegram: 본인/조직 정책상 필요할 때만
-- Rectangle: 창 분할
+- Telegram / Discord: 본인/조직 정책상 필요할 때만 / 팀 커뮤니티·음성
+- 창 분할: Rectangle(무료, 기본) 또는 Magnet(유료, App Store) 중 하나
 - WinMacKey: Windows식 키감
+- Omnissa Horizon Client: VDI(가상 데스크톱) 접속 — 사내 정책에 따라
 
 검증 예시:
 
