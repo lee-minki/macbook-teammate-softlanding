@@ -24,9 +24,9 @@ Session-derived guidance for `macbook-teammate-softlanding`.
 3. App installation concepts: DMG to Applications, pkg installer, zip extraction, Gatekeeper warnings.
 4. Permissions: Accessibility, Input Monitoring, Automation, Login Items, Full Disk Access; restart apps after granting permissions.
 5. Team workspace: `/Users/<account>/worksapces` and `~/.claude/workspace`.
-6. Productivity tools: Raycast, RunCat, Chrome, Rectangle, WinMacKey; Tailscale if team networking requires it.
+6. Productivity tools: Raycast, Stats + RunCat, Chrome, Discord, Rectangle (free; Magnet = paid alt), WinMacKey, Omnissa Horizon (VDI); Tailscale if team networking requires it.
 7. Developer baseline: Homebrew latest, Python 3.11, Node latest stable, Git and CLI utilities.
-8. AI tools only after basics: Claude Desktop/Code, Codex, Hermes Agent, Playwright; user enters credentials directly.
+8. AI tools only after basics: Claude Desktop/Code, Codex, Gemini, Hermes Agent, OpenCode, oh-my-opencode, oh-my-codex (omx), VS Code Codex extension, Playwright; user enters credentials directly.
 9. Verification-first handoff: record `--version` outputs instead of hard-coding dated exact versions.
 
 ## Copyable Baseline Commands
