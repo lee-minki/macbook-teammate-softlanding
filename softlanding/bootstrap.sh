@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.5.1)            ║
+# ║  MacBook Soft-Landing — One-Click Bootstrap (v1.6.0)            ║
 # ║  대상: Windows 에서 넘어온 사용자, 팀 표준 베이스라인 1회 자동         ║
 # ║                                                                       ║
 # ║  설계 원칙:                                                            ║
@@ -17,6 +17,8 @@
 # ║    SKIP_AI=1     — AI CLI npm globals 건너뜀                          ║
 # ║    SKIP_MAS=1    — App Store 앱(Amphetamine 등) 건너뜀                ║
 # ║    SKIP_DEFAULTS=1 — defaults write 건너뜀                            ║
+# ║    SKIP_MLX=1    — 로컬 LLM(MLX venv + Ollama) 건너뜀                 ║
+# ║    WINMACKEY_REPO="owner/repo" — WinMacKey 릴리스 안내 (미지정 생략)  ║
 # ║    DARK_MODE=0   — 다크모드 자동 적용 안 함 (기본 1)                  ║
 # ║    NATURAL_SCROLL=1 — Mac 기본 자연 스크롤 유지 (기본 0 = 윈도우식)    ║
 # ╚══════════════════════════════════════════════════════════════════════╝
@@ -75,7 +77,7 @@ require_cmd() {
 # 시작 배너
 # ────────────────────────────────────────────────────────
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n"
-printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.5.1)${C_RESET}\n"
+printf "${C_BOLD}  MacBook Soft-Landing — One-Click Bootstrap (v1.6.0)${C_RESET}\n"
 printf "${C_BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${C_RESET}\n\n"
 
 if [[ "$(uname)" != "Darwin" ]]; then printf "${C_R}macOS 전용입니다.${C_RESET}\n"; exit 1; fi
@@ -158,7 +160,8 @@ cask "raycast"; cask "google-chrome"; cask "telegram-desktop"; cask "discord"; c
 cask "omnissa-horizon-client"
 cask "ghostty"; cask "visual-studio-code"; cask "cursor"
 cask "claude"
-brew "ollama"; cask "lm-studio"
+brew "ollama"
+cask "lm-studio" if Hardware::CPU.arm?
 BREWEOF
   fi
   brew bundle --file="$BF" && ok "brew bundle 완료" || warn "brew bundle 일부 실패 — 아래 핵심 도구 자동 점검"
@@ -235,65 +238,39 @@ else
 fi
 
 # ────────────────────────────────────────────────────────
-# [6/14] WinMacKey (GitHub Release — 항상 최신 확인/갱신)
+# [6/14] WinMacKey (GitHub 레포 참조 — 안내·최신 확인. 자동 설치 안 함)
 # ────────────────────────────────────────────────────────
-step "WinMacKey (GitHub Release — 항상 최신 확인/갱신)" "curl 또는 gh, WINMACKEY_REPO 환경변수"
-# WinMacKey 는 활발히 업데이트되므로, 이미 설치돼 있어도 매번 최신 릴리스를 확인해 갱신한다.
-# 저장소는 환경변수로 주입 (예: WINMACKEY_REPO="owner/repo"). 미지정 시 skip — repo 하드코딩 안 함.
+step "WinMacKey 안내 (GitHub 레포 참조)" "WINMACKEY_REPO 환경변수 (선택)"
+# WinMacKey 는 DMG 를 자동 다운로드·설치하지 않는다(보안/신뢰 경계). GitHub 레포(릴리스)를
+# 참조해 사용자가 직접 받아 설치/업데이트한다. 저장소는 WINMACKEY_REPO 로 주입 (예: "owner/repo").
+# 미지정 시 안내를 생략한다 — 특정 개인/조직 저장소를 하드코딩하지 않음.
 WM_REPO="${WINMACKEY_REPO:-}"
 WM_APP="/Applications/WinMacKey.app"
 wm_installed_ver=""
 [[ -d "$WM_APP" ]] && wm_installed_ver="$(defaults read "$WM_APP/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "")"
 
-# DMG 1개를 받아 /Applications 에 (재)설치 — 실행 중이면 종료 후 교체. $1=dmg 경로
-wm_install_from_dmg() {
-  local dmg="$1" mnt app
-  mnt="$(hdiutil attach -nobrowse -noverify -noautoopen "$dmg" 2>/dev/null | awk '/\/Volumes\//{print $NF; exit}')"
-  [[ -z "$mnt" ]] && { fail "WinMacKey DMG 마운트 실패"; return 1; }
-  app="$(ls -d "$mnt"/*.app 2>/dev/null | head -1)"
-  if [[ -n "$app" ]]; then
-    osascript -e 'tell application "WinMacKey" to quit' >/dev/null 2>&1 || true
-    rm -rf "$WM_APP" 2>/dev/null
-    cp -R "$app" /Applications/ && ok "WinMacKey 설치/갱신 완료" || fail "WinMacKey 복사 실패"
-  else
-    fail "DMG 안에서 .app 을 못 찾음"
-  fi
-  hdiutil detach "$mnt" >/dev/null 2>&1 || true
-}
-
 if [[ -z "$WM_REPO" ]]; then
-  if [[ -d "$WM_APP" ]]; then ok "WinMacKey 설치됨 (v${wm_installed_ver:-?}) — WINMACKEY_REPO 미지정이라 최신 확인은 생략"
-  else skip "WINMACKEY_REPO 미지정 — WinMacKey 건너뜀 (WINMACKEY_REPO=\"owner/repo\" 로 지정)"; fi
-elif ! command -v curl >/dev/null 2>&1; then
-  skip "curl 없음 — WinMacKey 최신 확인/다운로드 불가"
+  if [[ -d "$WM_APP" ]]; then ok "WinMacKey 설치됨 (v${wm_installed_ver:-?})"
+  else skip "WINMACKEY_REPO 미지정 — WinMacKey 안내 생략 (윈도우 키감 원하면 WINMACKEY_REPO=\"owner/repo\")"; fi
 else
-  # 최신 릴리스 메타데이터 1회 조회 → 버전 비교
-  WM_META="$(curl -fsSL "https://api.github.com/repos/${WM_REPO}/releases/latest" 2>/dev/null)"
-  wm_latest_ver="$(printf '%s' "$WM_META" | grep -oE '"tag_name":[[:space:]]*"[^"]+"' | head -1 | cut -d'"' -f4)"
-  wm_latest_ver="${wm_latest_ver#v}"
-  if [[ -n "$wm_installed_ver" && -n "$wm_latest_ver" && "$wm_installed_ver" == "$wm_latest_ver" ]]; then
-    ok "WinMacKey 최신 (v$wm_installed_ver)"
+  WM_URL="https://github.com/${WM_REPO}/releases/latest"
+  # 최신 릴리스 tag 만 조회(바이너리 다운로드 안 함) → 설치 버전과 비교해 알림
+  wm_latest_ver=""
+  if command -v curl >/dev/null 2>&1; then
+    wm_latest_ver="$(curl -fsSL "https://api.github.com/repos/${WM_REPO}/releases/latest" 2>/dev/null \
+      | grep -oE '"tag_name":[[:space:]]*"[^"]+"' | head -1 | cut -d'"' -f4)"
+    wm_latest_ver="${wm_latest_ver#v}"
+  fi
+  if [[ -z "$wm_installed_ver" ]]; then
+    info "WinMacKey 미설치 — 릴리스 페이지에서 받아 설치하세요 (DMG 열어 /Applications 로 드래그): $WM_URL"
+    open "$WM_URL" >/dev/null 2>&1 || true
+    warn "WinMacKey 는 수동 설치 (레포 릴리스 페이지를 열었습니다)"
+  elif [[ -n "$wm_latest_ver" && "$wm_installed_ver" != "$wm_latest_ver" ]]; then
+    info "WinMacKey 새 버전 v${wm_latest_ver} 있음 (설치됨 v${wm_installed_ver}) — 수동 업데이트: $WM_URL"
+    open "$WM_URL" >/dev/null 2>&1 || true
+    ok "WinMacKey 설치됨 v${wm_installed_ver} (위 링크에서 직접 업데이트)"
   else
-    [[ -n "$wm_installed_ver" ]] && info "WinMacKey 갱신 확인: 설치 v${wm_installed_ver} → 릴리스 v${wm_latest_ver:-?}"
-    WD="$(mktemp -d -t winmackey.XXXXXX)"; DMG=""
-    if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
-      (cd "$WD" && gh release download --repo "$WM_REPO" --pattern '*.dmg' --clobber >/dev/null 2>&1) \
-        && DMG="$(ls "$WD"/*.dmg 2>/dev/null | head -1)"
-    fi
-    if [[ -z "$DMG" ]]; then
-      URL="$(printf '%s' "$WM_META" | grep -oE '"browser_download_url":[[:space:]]*"[^"]+\.dmg"' | head -1 | cut -d'"' -f4)"
-      [[ -n "$URL" ]] && curl -fsSL -o "$WD/WinMacKey.dmg" "$URL" && DMG="$WD/WinMacKey.dmg"
-    fi
-    if [[ -n "$DMG" && -f "$DMG" ]]; then
-      wm_install_from_dmg "$DMG"
-    elif [[ -d "$WM_APP" ]]; then
-      warn "최신 릴리스 다운로드 실패 — 기존 v${wm_installed_ver} 유지. 릴리스 페이지 확인"
-      open "https://github.com/${WM_REPO}/releases/latest" 2>/dev/null || true
-    else
-      warn "WinMacKey 다운로드 실패 — 릴리스 페이지를 엽니다"
-      open "https://github.com/${WM_REPO}/releases/latest" 2>/dev/null || true
-    fi
-    rm -rf "$WD" 2>/dev/null
+    ok "WinMacKey 설치됨 (v${wm_installed_ver}${wm_latest_ver:+ · 최신})"
   fi
 fi
 
@@ -452,9 +429,11 @@ else
   # Ollama (brew formula 로 이미 깔렸을 수 있음)
   if command -v ollama >/dev/null 2>&1; then
     ok "ollama $(ollama --version 2>&1 | head -1)"
-  else
+  elif command -v brew >/dev/null 2>&1; then
     warn "ollama 미설치 — brew install ollama 재시도"
     brew install ollama >/dev/null 2>&1 && ok "ollama 재설치" || warn "ollama 설치 실패"
+  else
+    skip "ollama 미설치 + brew 없음 — 건너뜀"
   fi
 
   # MLX (Apple Silicon 전용 Python 패키지)
@@ -537,4 +516,7 @@ printf "  2) ${C_BOLD}claude${C_RESET} 를 실행해 로그인합니다\n"
 printf "  3) ${C_BOLD}/macbook-teammate-softlanding${C_RESET} 스킬을 호출하면, 권한 ON·로그인 등\n"
 printf "     남은 수동 20%%를 Claude Code 가 설명하며 함께 진행합니다.\n"
 printf "  ${C_X}→ 이제 명령을 외울 필요 없이, 하고 싶은 걸 claude 에게 말하면 됩니다.${C_RESET}\n"
+
+# FAIL 이 있으면 비정상 종료해 자동화/CI 가 실패를 감지하게 한다 (멱등이므로 재실행 안전)
+[[ $FAIL -gt 0 ]] && exit 1
 exit 0

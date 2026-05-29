@@ -43,9 +43,10 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 - 이후 `gh repo clone`, `gh pr create`, `gh pr view --web` 등 활용
 
 ### Python 3.11 + uv + pipx
-- 팀 표준 (Alarm-Checker_Server 결정. 2026-05-12)
-- 가상환경: `cd ~/worksapces/myproject && uv venv && source .venv/bin/activate`
-- 글로벌 CLI 도구: `pipx install httpie` 같은 식
+- **Python 3.11 = 팀 표준.** 항상 `python3.11` 로 명시 호출
+- **uv**: 가상환경/패키지 매니저. 3.11 로 만들려면 `uv venv --python 3.11` (그냥 `uv venv` 는 기본 파이썬 사용):
+  `cd ~/worksapces/myproject && uv venv --python 3.11 && source .venv/bin/activate`
+- **pipx**: 글로벌 CLI 도구 설치기 (`pipx install httpie` 등). pipx 자체는 Homebrew 가 묶어주는 파이썬으로 돌아가며 — **프로젝트의 3.11 과는 별개**다
 - ⚠️ `/usr/bin/python3` (시스템) 은 건드리지 말 것. 항상 `python3.11` 명시 호출
 
 ---
@@ -146,6 +147,7 @@ bootstrap.sh 가 깔아준 앱들의 **왜 깔았는지 + 첫 5분 사용법 + �
 ### Logi Options+ — 로지텍 전용
 - MX Master, MX Keys 등 로지텍 제품 연결 시 자동 인식
 - 버튼 매핑, 제스처, 앱별 프로파일
+- ⚠️ 설치 후 **재부팅해야** 드라이버가 적용됩니다 (Homebrew 안내)
 
 ### The Unarchiver
 - **왜?** macOS 기본은 rar/7z 못 풂

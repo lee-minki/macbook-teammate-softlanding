@@ -28,7 +28,7 @@
 - [ ] **관리자 계정인지** — 소프트웨어 설치 권한이 있어야 합니다. (보통 첫 계정이 관리자)
 - [ ] **(회사 장비라면)** 설치 가능한 앱/보안 정책을 담당자에게 한 번 확인.
 
-> 💡 비밀번호는 메모해 두세요. 설치 중 몇 번 물어봅니다.
+> 💡 맥 로그인(관리자) 비밀번호가 설치 중 몇 번 필요합니다. **평문으로 적어두지 말고** 기억하거나 비밀번호 관리자에 보관하세요.
 
 ---
 
@@ -146,7 +146,7 @@ bash softlanding/bootstrap-min.sh
 
 그러면 Claude Code 가 **나머지를 설명하면서** 진행합니다:
 
-- 업무용 앱 30개 설치 (또는 전체 설치 스크립트 실행 안내)
+- 업무용 앱 설치 (brew bundle 32개 + App Store 3개 + 선택 항목; 또는 전체 설치 스크립트 실행 안내)
 - Finder/Dock/스크린샷 등 기본값 정리
 - **권한 켜는 법을 화면 위치까지** 알려줌
 
@@ -155,8 +155,7 @@ bash softlanding/bootstrap-min.sh
 > GIT_NAME="본인이름" GIT_EMAIL="본인메일@example.com" bash softlanding/bootstrap.sh
 > ```
 
-> 🔧 **WinMacKey(윈도우식 키감)는 선택입니다.** 자동 설치하려면 릴리스 저장소를 함께 지정하세요
-> (지정 안 하면 그냥 건너뜁니다):
+> 🔧 **WinMacKey(윈도우식 키감)는 선택입니다.** 릴리스 저장소를 지정하면 GitHub 릴리스 페이지를 안내해 줍니다(자동 설치는 안 하고, 새 버전 알림 + 페이지 열기). 받은 DMG 를 열어 `/Applications` 로 드래그하면 됩니다 — 지정 안 하면 건너뜁니다:
 > ```bash
 > WINMACKEY_REPO="<owner>/<repo>" GIT_NAME="본인이름" GIT_EMAIL="본인메일@example.com" bash softlanding/bootstrap.sh
 > ```

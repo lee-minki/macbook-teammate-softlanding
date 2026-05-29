@@ -16,7 +16,7 @@ set -eu
 
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(dirname "$SRC_DIR")"
-DATE_TAG="$(date +%Y%m%d)"
+DATE_TAG="$(date +%Y%m%d-%H%M%S)"   # 시각 포함 — 같은 날 재실행해도 덮어쓰지 않음
 OUT="$PARENT_DIR/softlanding-${DATE_TAG}.tar.gz"
 
 # .DS_Store 등 노이즈 제외

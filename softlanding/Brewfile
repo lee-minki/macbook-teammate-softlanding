@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MacBook Soft-Landing Brewfile (v1.5.1)                         ║
+# ║  MacBook Soft-Landing Brewfile (v1.6.0)                         ║
 # ║  대상: Windows에서 넘어온 사용자가 팀 표준 베이스라인 1회 설치          ║
 # ║  사용: brew bundle --file=Brewfile  (bootstrap.sh 가 자동 호출)       ║
 # ╚══════════════════════════════════════════════════════════════════════╝
@@ -11,7 +11,7 @@ brew "mas"
 brew "git"               # 최신 git
 brew "gh"                # GitHub CLI (Repo clone, PR, gist)
 brew "node"              # JS 런타임 + npm
-brew "python@3.11"       # 팀 표준 Python (Alarm-Checker_Server 결정. 2026-05-12)
+brew "python@3.11"       # 팀 표준 Python 3.11
 brew "uv"                # 빠른 pip/venv 매니저
 brew "pipx"              # 글로벌 CLI Python 도구
 brew "jq"                # JSON CLI
@@ -27,9 +27,10 @@ cask "the-unarchiver"    # rar/7z/zip 등 모든 압축 해제
 cask "mos"               # 외부 마우스(특히 로지텍) 부드러운 스크롤 + 방향 반전 토글
 cask "logi-options+"     # 로지텍 마우스/키보드 공식 — 버튼 매핑/제스처
 cask "rectangle"         # 창 분할 (윈도우 Win+화살표 대체) — 무료/기본. 유료 대안=Magnet(App Store, 미설치)
+# 참고: logi-options+ 는 설치 후 재부팅해야 적용됨 (Homebrew caveat: "must reboot")
 
 # === ④ 키보드 편의 (윈도우식 키감 + Hyperkey/리더키) ===
-# WinMacKey 는 brew cask 없음 → bootstrap.sh 에서 GitHub Release DMG 직접 fetch
+# WinMacKey 는 brew cask 없음 → bootstrap.sh 가 GitHub 레포(릴리스) 안내만 (수동 설치)
 cask "karabiner-elements"  # Hyper Key / Leader Key 리매핑 (CapsLock → ⌘⌥⌃⇧)
 
 # === ⑤ 메뉴바 & 시스템 모니터 ===
@@ -56,12 +57,12 @@ cask "claude"            # Claude Desktop (MCP, 로컬 파일 접근)
 
 # === ⑨ 로컬 LLM (MLX / Apple Silicon) ===
 brew "ollama"            # 로컬 LLM 런타임 (CLI). `ollama run llama3.2` 등
-cask "lm-studio"         # GUI 로컬 LLM — 모델 탐색/다운로드/채팅, OpenAI 호환 서버
+cask "lm-studio" if Hardware::CPU.arm?   # GUI 로컬 LLM (cask 가 Apple Silicon 전용) — Intel 에선 자동 skip
 # MLX (mlx, mlx-lm) 는 Python 패키지 → bootstrap.sh 가 ~/worksapces/mlx-lab venv 에 설치
 #   Apple Silicon 전용. Intel Mac 에서는 자동 skip.
 
 # 참고:
-# - winmackey:   WINMACKEY_REPO 환경변수가 가리키는 GitHub Release DMG 직접 다운로드 (미지정 시 skip)
+# - winmackey:   WINMACKEY_REPO 가 가리키는 GitHub 레포(릴리스) 참조·안내 — 수동 설치 (미지정 시 skip)
 # - runcat:      mas 1429033973 (메뉴바 CPU 인디케이터)
 # - amphetamine: mas 937984704 (절전 방지, 발표/회의용)
 # - hidden-bar:  mas 1452453066 (메뉴바 정리)

@@ -1,21 +1,21 @@
 ---
 name: macbook-teammate-softlanding
-description: "Use when setting up a Mac for someone using macOS for the first time, typically a user coming from Windows. Provides a one-click bootstrap.sh that handles the automatable 80% — Xcode CLT, Homebrew + brew bundle (32 packages including AltTab/Maccy/Mos/Rectangle/Karabiner/Ghostty/VS Code/Cursor/Claude Desktop), WinMacKey DMG fetch via GitHub Release, mas for Amphetamine/Hidden Bar/RunCat, VS Code Codex extension (openai.chatgpt), Omnissa Horizon (VDI), defaults write for Finder/Dock/scroll-direction/dark-mode/key-repeat/screenshot, Python 3.11 + uv + pipx, Git config, npm globals for Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex — with dependency gating + self-heal so that e.g. Claude Code never runs without node. Demarcates the manual 20% (Apple ID, TCC permissions, Tailscale OAuth, iCloud desync, per-AI login). Excludes personal vaults, password managers, secrets, and private accounts from any prior system. Companion docs: windows-to-mac-survival.md (12 Windows-user pitfalls) and apps-usage.md (each installed app's first 5 minutes)."
-version: 1.5.0
-author: Hermes Agent
+description: "Use when setting up a Mac for a first-time macOS user (often coming from Windows) or a vibe-coding beginner. A one-click bootstrap automates ~80% — Homebrew + apps (Ghostty terminal, VS Code/Cursor, window-management, AI tools), Python 3.11, Git, and AI CLIs (Claude Code/Codex/Gemini/Hermes/OpenCode) — with dependency gating so Claude Code never installs without node. It demarcates the manual 20% (Apple ID, TCC permissions, Tailscale, per-AI login) and never copies personal vaults, secrets, or accounts. Details in GETTING-STARTED.md and docs/."
+version: 1.6.0
 license: MIT
 platforms: [macos]
 metadata:
-  hermes:
-    tags: [macbook, macos-beginner, onboarding, softlanding, vibe-coding, finder, homebrew, tailscale, mlx, ai-tools]
-    related_skills: [hermes-agent, hermes-omx-workspace-bootstrap, mk-workspaces-operations, macos-terminal-remapper-conflict-debugging, systematic-debugging]
+  category: dev-environment
+  locale: ko-KR
+  phase: v1
+  tags: [macbook, macos-beginner, onboarding, softlanding, vibe-coding, homebrew, ghostty, ai-tools]
 ---
 
 # MacBook Teammate Soft-Landing
 
 ## Overview
 
-이 스킬은 Mac을 처음 쓰면서 바이브 코딩(AI 보조 개발)을 시작하려는 사용자를 대상으로, MacBook/Mac mini를 한 번에 작업 가능한 기본 환경으로 소프트랜딩시키는 절차다. 동봉 HTML 가이드가 초보자 흐름의 형태 기준이며, 그 문서의 방향처럼 “처음 15분 빠른 시작 → Finder/단축키/설치/권한 → 작업 폴더 → Tailscale → 생산성 앱 → Homebrew/Node/Git → AI 도구(클라우드 + 로컬 MLX + 오케스트레이션) → 최종 검증” 순서로 간다.
+이 스킬은 Mac을 처음 쓰면서 바이브 코딩(AI 보조 개발)을 시작하려는 사용자를 대상으로, MacBook/Mac mini를 한 번에 작업 가능한 기본 환경으로 소프트랜딩시키는 절차다. 초보자 흐름은 `GETTING-STARTED.md` 가 기준이며, 그 문서처럼 “처음 15분 빠른 시작 → Finder/단축키/설치/권한 → 작업 폴더 → Tailscale → 생산성 앱 → Homebrew/Node/Git → AI 도구(클라우드 + 로컬 MLX + 오케스트레이션) → 최종 검증” 순서로 간다.
 
 목표는 개인 시스템의 복제가 아니다. 사용자가 맥을 무서워하지 않고 업무 폴더를 찾고, 앱을 설치하고, 권한을 허용하고, Git/Node/AI 도구를 검증할 수 있게 만드는 것이다. 초심자용 설명, 스크린샷/체크리스트, 복붙 가능한 명령어를 우선한다.
 
@@ -28,7 +28,7 @@ metadata:
 1. 터미널 확보  → Ghostty        "명령을 칠 창"
 2. AI 조수 확보 → Claude Code    "이제 명령을 외울 필요가 없어진다"
 3. 스킬 주도    → Claude Code 안에서 이 스킬 호출
-                  → 나머지(앱 30개·설정·권한 20%)를 Claude Code 가 설명하며 진행
+                  → 나머지(앱 32개·설정·권한 20%)를 Claude Code 가 설명하며 진행
 ```
 
 - `softlanding/bootstrap-min.sh` = 0→2단계만 (Ghostty + node + Claude Code + Ghostty config). "claude 를 띄우는 것"이 목표.
@@ -40,12 +40,13 @@ metadata:
 시나리오가 신규 설치든, 트러블슈팅이든, 단일 기능 질문이든 **첫 응답**에 아래를 빠뜨리지 않는다. 트러블슈팅·단일 질문이라고 자동 경로/의존성/경로 인용을 생략하지 말 것 — 그게 가장 흔한 실패다.
 
 ### A. 신규 설치/환경 구축 ("새 맥북", "한 번에 깔아줘", "바이브 코딩 환경")
-첫 코드블록으로 자동 설치 한 줄:
+첫 코드블록으로 자동 설치 한 줄 (아래는 tar.gz 번들을 `~/Downloads/softlanding` 에 푼 경우. clone/ZIP 이면 저장소 루트에서 `bash softlanding/bootstrap.sh`):
 ```bash
 cd ~/Downloads/softlanding
 GIT_NAME="..." GIT_EMAIL="..." bash bootstrap.sh
 ```
 이어서 의존성 체인(Xcode CLT → Homebrew → brew bundle → 핵심 CLI 6종 + Tailscale.app → AI CLI/MLX)을 한 번 명시.
+- **진짜 초심자**라면 `bootstrap-min.sh`(Ghostty + Claude Code 까지)로 먼저 띄운 뒤, 나머지는 Claude Code 에서 이 스킬로 대화식 진행을 권한다(Overview 의 전후관계 참조).
 
 ### B. 트러블슈팅 ("X 안 됨", "Y 망가짐")
 첫 단락에 반드시:
@@ -148,10 +149,10 @@ Goal: Mac을 처음 접하는 사용자를 위해 MacBook/Mac mini 소프트랜�
 스킬 운영 매뉴얼:
 
 ```text
-references/manual.md
+docs/manual.md
 ```
 
-실제 온보딩을 실행할 때는 먼저 `references/manual.md`를 열고, 그 매뉴얼의 진행 순서와 최종 검증표를 기준으로 작업한다. SKILL.md는 원칙과 트리거, manual.md는 현장 실행 절차다.
+실제 온보딩을 실행할 때는 먼저 `docs/manual.md`를 열고, 그 매뉴얼의 진행 순서와 최종 검증표를 기준으로 작업한다. SKILL.md는 원칙과 트리거, manual.md는 현장 실행 절차다.
 
 참고할 로컬 자료:
 
@@ -161,9 +162,9 @@ references/manual.md
 softlanding/                       # 자동화 자산 (이 스킬이 실행 기준)
 ├── bootstrap-min.sh               # Stage 0: Ghostty + Claude Code 까지만 (전후관계 1·2단계)
 ├── bootstrap.sh                   # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
-├── Brewfile                       # 32개 (brew 13 + cask 19)
+├── Brewfile                       # 32개 (brew 13 + cask 19; Intel 은 lm-studio 제외 31)
 ├── ghostty.config                 # Ghostty 초심자 기본 config (비파괴 복사)
-├── verify.sh                      # OK/WARN/SKIP/FAIL 체크리스트
+├── verify.sh                      # OK/WARN/FAIL 체크리스트
 ├── apps-usage.md                  # 각 앱 첫 5분
 ├── windows-to-mac-survival.md     # 윈도우 사용자 12가지 함정
 ├── install-skill.sh               # 이 스킬을 ~/.claude/skills/ + ~/.codex/skills/ 에 설치
@@ -175,7 +176,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 ```
 
 보조 참고 노트:
-- `references/mac-beginner-baseline.md`: Mac 초심자 대상, 개인 Vault/Bitwarden 제외, 최신 안정판 앱/Node 기준, Python 3.11 기준 등 보정사항.
+- `docs/mac-beginner-baseline.md`: Mac 초심자 대상, 개인 Vault/Bitwarden 제외, 최신 안정판 앱/Node 기준, Python 3.11 기준 등 보정사항.
 
 이 자료에서 반영할 핵심 목차:
 - 처음 15분 빠른 시작
@@ -248,7 +249,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 - `worksapces` 오타는 팀 문서/스크립트 호환을 위해 유지한다.
 - 사용자가 오타를 혼란스러워하면 문서에 “표준 경로라서 그대로 쓴다”고 명시한다.
 
-## Automation Boundary (v1.5.0)
+## Automation Boundary (v1.6.0)
 
 "딸깍"의 현실적 경계를 먼저 명시한다. 무리하게 자동화를 시도하지 않는다.
 
@@ -262,7 +263,7 @@ softlanding/                       # 자동화 자산 (이 스킬이 실행 기�
 - 클라우드 AI: Claude Desktop + npm globals (Claude Code/Codex/Gemini/Hermes Agent/OpenCode/oh-my-opencode/oh-my-codex)
 - 로컬 LLM: Ollama(brew), LM Studio(cask), MLX(`~/worksapces/mlx-lab` venv, Apple Silicon 전용 — `uv pip install mlx mlx-lm`)
 - App Store(mas): Amphetamine(절전 방지), Hidden Bar(메뉴바 정리), RunCat(메뉴바 CPU 인디케이터)
-- WinMacKey: 팀이 지정한 GitHub Release 의 Latest(Published) DMG 를 `gh release download` 또는 GitHub API 로 fetch. 저장소는 `WINMACKEY_REPO` 환경변수로 주입한다. **WinMacKey 는 활발히 업데이트되므로, 이미 설치돼 있어도 설치 버전(`CFBundleShortVersionString`)과 최신 릴리스 tag 를 비교해 다르면 자동 갱신**한다(실행 중이면 종료 후 교체). 미지정 시 자동 설치를 건너뛰고 안내만 한다. Draft 릴리스는 자동으로 건너뛴다.
+- WinMacKey: **DMG 를 자동 다운로드·설치하지 않는다**(보안/신뢰 경계). `WINMACKEY_REPO` 가 지정되면 GitHub 릴리스 페이지를 **참조·안내**하고(필요 시 자동으로 열어줌), 설치 버전(`CFBundleShortVersionString`)과 최신 릴리스 tag 를 비교해 **새 버전이 있으면 알린다**. 실제 설치/업데이트는 사용자가 릴리스에서 직접 받아 한다(수동 20% 에 속함). 미지정 시 안내를 생략한다.
 - `~/worksapces/{api-server,frontend-web,infra-tools,data-pipeline,shared-lib}` + `~/.claude/workspace`
 - `defaults write` 일괄 — Finder(경로/상태 막대, 컬럼, 확장자), Dock(자동 숨김), 키 반복(가장 빠름), 자연 스크롤 OFF, 다크모드 ON, 스크린샷(PNG/그림자 제거/다운로드 폴더), .DS_Store 네트워크/USB 비생성, 24시간제
 - `pmset -c displaysleep 30 sleep 0` (sudo 가능할 때)
@@ -310,10 +311,12 @@ GIT_NAME="홍길동" GIT_EMAIL="hong@company.com" bash softlanding/bootstrap.sh
 
 옵션:
 - `SKIP_AI=1` — AI CLI npm globals 건너뜀
-- `SKIP_MAS=1` — Amphetamine/Hidden Bar 건너뜀
+- `SKIP_MAS=1` — Amphetamine/Hidden Bar/RunCat 건너뜀
 - `SKIP_DEFAULTS=1` — defaults write 건너뜀
+- `SKIP_MLX=1` — 로컬 LLM(MLX venv + Ollama) 건너뜀
 - `DARK_MODE=0` — 다크모드 적용 안 함 (기본 1)
 - `NATURAL_SCROLL=1` — Mac 기본 자연 스크롤 유지 (기본 0 = 윈도우식)
+- `WINMACKEY_REPO="owner/repo"` — WinMacKey 릴리스 안내 활성화 (미지정 시 생략)
 
 멱등(idempotent). 재실행 안전. 출력 마지막에 OK/WARN/SKIP/FAIL 요약 + 다음 명령 안내.
 
