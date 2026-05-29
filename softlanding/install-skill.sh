@@ -31,10 +31,12 @@ install_to() {
   local target="$target_root/macbook-teammate-softlanding"
   rm -rf "$target"
   mkdir -p "$target"
-  # 스킬 정의 + 참고 문서를 저장소 루트에서 복사
+  # 스킬 정의 + 루트 문서 복사 (설치된 스킬 안에서 상호 링크가 깨지지 않게 전부 동봉)
   cp "$REPO_ROOT/SKILL.md" "$target/"
-  [[ -f "$REPO_ROOT/README.md" ]] && cp "$REPO_ROOT/README.md" "$target/"
-  [[ -d "$REPO_ROOT/references" ]] && cp -R "$REPO_ROOT/references" "$target/"
+  for f in README.md GETTING-STARTED.md AGENTS.md CONTRIBUTING.md; do
+    [[ -f "$REPO_ROOT/$f" ]] && cp "$REPO_ROOT/$f" "$target/"
+  done
+  [[ -d "$REPO_ROOT/docs" ]] && cp -R "$REPO_ROOT/docs" "$target/"
   # softlanding 자산(스크립트, 매뉴얼)도 같이 둠 — 스킬이 직접 참조 가능
   cp -R "$SRC_ASSETS_DIR" "$target/softlanding"
   printf "${G}✔${D} %s → %s\n" "$name" "$target"

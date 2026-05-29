@@ -8,20 +8,20 @@ B=$'\033[1m'; D=$'\033[0m'; G=$'\033[32m'; Y=$'\033[33m'
 cat <<EOF
 ${B}━━ macOS 권한 허용 안내 ━━${D}
 
-각 권한 페이지가 순서대로 열립니다.
-화면 좌측 목록에서 ${B}WinMacKey, Rectangle, Tailscale${D} 등의 스위치를 ON 하세요.
-설정 변경 후에는 해당 앱을 완전 종료 후 재실행해야 반영됩니다.
+각 권한 페이지가 순서대로 열립니다. 화면 좌측 목록에서 해당 앱 스위치를 ON 하세요.
+설정 변경 후에는 그 앱을 완전 종료(⌘Q) 후 재실행해야 반영됩니다.
+(설치한 앱만 목록에 보입니다 — 안 보이면 그 앱은 건너뛰세요.)
 
 EOF
 
 press() { read -r -p "  ${G}Enter${D} 를 누르면 다음 페이지를 엽니다... " _; }
 
-echo "1) ${B}접근성 (Accessibility)${D} — Rectangle, WinMacKey"
+echo "1) ${B}접근성 (Accessibility)${D} — Rectangle, AltTab, Maccy, WinMacKey, Karabiner-Elements (Stats 일부 기능)"
 press
 open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility" 2>/dev/null
 
 echo
-echo "2) ${B}입력 모니터링 (Input Monitoring)${D} — WinMacKey"
+echo "2) ${B}입력 모니터링 (Input Monitoring)${D} — WinMacKey, Karabiner-Elements"
 press
 open "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent" 2>/dev/null
 

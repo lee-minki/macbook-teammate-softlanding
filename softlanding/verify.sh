@@ -55,6 +55,11 @@ v rg rg --version
 v fd fd --version
 v tree tree --version
 v wget wget --version
+v ollama ollama --version
+# MLX 로컬 LLM venv (Apple Silicon 전용 — bootstrap 이 ~/worksapces/mlx-lab 에 생성)
+if [[ "$(uname -m)" == "arm64" ]]; then
+  if [[ -x "$HOME/worksapces/mlx-lab/.venv/bin/python" ]]; then chk_ok "MLX venv (~/worksapces/mlx-lab/.venv)"; else chk_warn "MLX venv 없음 (~/worksapces/mlx-lab/.venv)"; fi
+fi
 if command -v tailscale >/dev/null 2>&1; then
   chk_ok "tailscale $(tailscale version 2>&1 | head -1)"
 elif [[ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]]; then
@@ -68,6 +73,7 @@ section "앱 (/Applications)"
 apps=(
   "AltTab"
   "Maccy"
+  "The Unarchiver"
   "Mos"
   "logioptionsplus"
   "Rectangle"

@@ -35,17 +35,21 @@ cd ~/Downloads && git clone https://github.com/lee-minki/macbook-teammate-softla
 
 ```
 SKILL.md                          # 스킬 정의 (원칙, 트리거, Response Pattern, Phase 0~11)
-references/
+GETTING-STARTED.md                # 맥 처음 사용자용 0~7단계 매뉴얼
+AGENTS.md · CONTRIBUTING.md       # 에이전트 호환 규칙 · 기여 가이드
+docs/
 ├── manual.md                     # 현장 실행 운영 매뉴얼
-└── mac-beginner-baseline.md      # 초심자 베이스라인 보정 노트
-softlanding/                      # 실행 자산 (딸깍 설치)
+├── mac-beginner-baseline.md      # 초심자 베이스라인 보정 노트
+├── security-and-secrets.md       # 제외(시크릿/개인정보) 원칙
+└── releasing.md                  # 버전 단일소스·릴리스 규약
+softlanding/                      # 실행 자산 (자기완결 — tar.gz 로 그대로 배포)
 ├── bootstrap-min.sh              # Stage 0: Ghostty + Claude Code 까지만
 ├── bootstrap.sh                  # 14단계, 의존성 게이트 + 자가복구 (전부 한 방에)
-├── Brewfile                      # brew bundle 정의 (32개)
+├── Brewfile                      # brew bundle 정의 (Apple Silicon 32개)
 ├── ghostty.config                # Ghostty 초심자 기본 config (비파괴 복사)
-├── verify.sh                     # 설치 검증 (OK/WARN/SKIP/FAIL)
-├── apps-usage.md                 # 각 앱 첫 5분
-├── windows-to-mac-survival.md    # 윈도우 사용자 12가지 함정
+├── verify.sh                     # 설치 검증 (OK/WARN/FAIL)
+├── apps-usage.md                 # 각 앱 첫 5분 (번들 동봉)
+├── windows-to-mac-survival.md    # 윈도우 사용자 12가지 함정 (번들 동봉)
 ├── install-skill.sh              # 스킬을 ~/.claude/skills 등에 설치
 ├── package.sh                    # 배포용 .tar.gz 패키징
 └── prompts/                      # 권한/로그인 안내 헬퍼
@@ -79,13 +83,13 @@ bash softlanding/prompts/permissions-open.sh
 ```
 
 ### WinMacKey (선택)
-WinMacKey 자동 설치를 원하면 GitHub Release 저장소를 환경변수로 지정한다 (미지정 시 건너뜀):
+WinMacKey 는 **DMG 를 자동 설치하지 않고 GitHub 레포(릴리스)를 참조·안내**한다(보안/신뢰 경계). 릴리스 저장소를 환경변수로 지정하면(미지정 시 안내 생략):
 
 ```bash
 WINMACKEY_REPO="owner/repo" GIT_NAME="..." GIT_EMAIL="..." bash softlanding/bootstrap.sh
 ```
 
-WinMacKey 는 활발히 업데이트되므로, **이미 설치돼 있어도 재실행하면 최신 릴리스와 버전을 비교해 자동 갱신**한다(실행 중이면 종료 후 교체). 팀 테스트 중 새 빌드가 올라오면 같은 명령만 다시 돌리면 된다.
+설치 버전과 최신 릴리스 tag 를 비교해 **새 버전이 있으면 알리고 릴리스 페이지를 열어준다**. 실제 설치/업데이트(DMG → /Applications 드래그)는 사용자가 직접 한다. 레포가 계속 업데이트되니, 새 빌드가 올라오면 릴리스 페이지에서 받아 교체하면 된다.
 
 ## 스킬로 설치
 

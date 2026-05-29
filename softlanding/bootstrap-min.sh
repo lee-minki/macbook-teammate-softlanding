@@ -52,8 +52,14 @@ command -v brew >/dev/null 2>&1 || { printf "${C_R}✘ brew 미인식 — 터미
 
 # 3) Ghostty(터미널) + node(Claude Code 의존)
 step "3/5" "Ghostty + node 설치"
-brew install --cask ghostty >/dev/null 2>&1 && ok "Ghostty 설치" || warn "Ghostty 설치 실패 — brew install --cask ghostty 수동 확인"
-brew install node >/dev/null 2>&1 && ok "node $(node --version 2>/dev/null)" || warn "node 설치 실패"
+brew install --cask ghostty >/dev/null 2>&1 && ok "Ghostty 설치" || warn "Ghostty 설치 실패 — brew install --cask ghostty 수동 확인 (Terminal 로도 진행 가능)"
+# node 는 Claude Code 의 필수 의존 — 실패 시 즉시 중단(이 스크립트의 목표 자체가 안 됨)
+brew install node >/dev/null 2>&1 || true
+if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
+  ok "node $(node --version 2>/dev/null) / npm $(npm --version 2>/dev/null)"
+else
+  printf "${C_R}✘ node/npm 설치 실패 — Claude Code 를 깔 수 없습니다. 인터넷/권한 확인 후 'brew install node' 다시.${C_RESET}\n"; exit 1
+fi
 
 # 4) Ghostty 기본 config (비파괴)
 step "4/5" "Ghostty 기본 config"

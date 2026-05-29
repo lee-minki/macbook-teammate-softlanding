@@ -53,7 +53,7 @@
 11. AI 도구
 12. 최종 검증과 인계
 
-## 0. Phase 0 — 딸깍 자동 설치 (v1.5.0)
+## 0. Phase 0 — 딸깍 자동 설치 (v1.6.0)
 
 전후관계: **터미널(Ghostty) → Claude Code → 이 스킬이 나머지 주도.** 진짜 초심자는 옵션 A 로 Claude Code 까지만 띄운 뒤, 나머지는 Claude Code 에서 이 스킬을 호출해 대화식으로 진행하는 것을 권장한다.
 
@@ -71,7 +71,7 @@ bash prompts/permissions-open.sh
 ```
 
 자동 처리:
-- Xcode CLT → Homebrew → 32개 앱/CLI(brew bundle) → mas 3개(Amphetamine, Hidden Bar, RunCat) → WinMacKey DMG
+- Xcode CLT → Homebrew → 32개 앱/CLI(brew bundle) → mas 3개(Amphetamine, Hidden Bar, RunCat) → WinMacKey 안내(레포 참조, 수동 설치)
 - 폴더 구조, Finder/Dock/스크롤/다크모드/캡처 defaults
 - Python 3.11 + uv + pipx
 - Git 설정 (환경변수)
@@ -226,7 +226,7 @@ tailscale status
 - 팀/회사 계정 여부
 - 네트워크 차단 여부
 
-## 9. 생산성 앱 (v1.3.0 — 윈도우 전환자 표준 확장)
+## 9. 생산성 앱 (윈도우 전환자 표준)
 
 ### 윈도우→맥 갭 메우기 (이것만큼은 반드시)
 - **AltTab** — ⌘Tab 을 "창 단위" 로 (윈도우 Alt+Tab 그대로). 손쉬운 사용 권한 필요
@@ -237,7 +237,7 @@ tailscale status
 - **Logi Options+** — 로지텍 마우스/키보드 공식 (버튼 매핑, 제스처)
 
 ### 키보드 편의
-- **WinMacKey** — Windows 키감 (GitHub Release DMG 자동 fetch). 활발히 업데이트되므로 재실행 시 설치 버전과 최신 릴리스를 비교해 **자동 갱신** (`WINMACKEY_REPO` 필요)
+- **WinMacKey** — Windows 키감. **GitHub 레포(릴리스) 참조·안내** 방식(`WINMACKEY_REPO` 지정 시). 새 버전 있으면 알리고 릴리스 페이지를 열어줌 — 설치/업데이트는 사용자가 직접(수동)
 - **Karabiner-Elements** — Hyper Key/Leader Key 고급 매핑 (선택)
 
 ### 메뉴바
